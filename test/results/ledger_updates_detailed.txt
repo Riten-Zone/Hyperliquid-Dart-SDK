@@ -1,0 +1,22 @@
+00:00 +0: loading test/info/ledger_updates_test.dart
+00:00 +0: LedgerUpdates integration (setUpAll)
+00:00 +0: LedgerUpdates integration fetches ledger updates for past 30 days
+✓ Found 1 ledger updates in past 30 days
+
+  Update types:
+    send: 1
+
+  Recent updates (last 5):
+    1. 2026-02-10 12:17:00.931 - send: See delta for details
+00:00 +1: LedgerUpdates integration validates ledger update structure
+✓ All 1 ledger updates have valid structure
+00:00 +2: LedgerUpdates integration handles different delta types correctly
+✓ Found 1 different delta types:
+  - send: 1 occurrences
+    Sample: token=USDC amount=12.0 
+00:01 +3: LedgerUpdates integration respects time range filtering
+✓ Time range filtering works correctly (0 updates in past 24h)
+00:01 +4: LedgerUpdates integration works without endTime parameter
+✓ Works without endTime (1 updates)
+00:01 +5: LedgerUpdates integration (tearDownAll)
+00:01 +5: All tests passed!

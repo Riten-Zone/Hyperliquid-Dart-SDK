@@ -1,0 +1,16 @@
+Test: web_data3_test
+Status: PASSED
+Category: websocket
+
+Key Output:
+00:00 +0: WebData3 subscription integration (setUpAll)
+00:01 +0: WebData3 subscription integration subscribes to webData3 and receives aggregate data
+WebData3 update #1 for 
+WebData3 update #2 for 
+✓ Received 2 webData3 updates
+00:06 +1: WebData3 subscription integration webData3 contains expected user state fields
+✓ WebData3 structure validated
+00:06 +2: WebData3 subscription integration webData3 updates reflect account changes
+✓ Collected 1 webData3 snapshots
+✓ All webData3 updates have valid structure
+00:09 +3: WebData3 subscription integration (tearDownAll)

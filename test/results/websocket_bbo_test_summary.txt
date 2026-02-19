@@ -1,0 +1,25 @@
+Test: bbo_test
+Status: PASSED
+Category: websocket
+
+Key Output:
+00:00 +0: BBO subscription integration (setUpAll)
+00:01 +0: BBO subscription integration subscribes to BTC BBO and receives updates
+BBO update #1: BTC at 1770830640484
+BBO update #2: BTC at 1770830640542
+BBO update #3: BTC at 1770830640715
+BBO update #4: BTC at 1770830640772
+BBO update #5: BTC at 1770830640916
+BBO update #6: BTC at 1770830640989
+BBO update #7: BTC at 1770830641119
+BBO update #8: BTC at 1770830641183
+BBO update #9: BTC at 1770830641327
+BBO update #10: BTC at 1770830641399
+BBO update #11: BTC at 1770830641429
+BBO update #12: BTC at 1770830641566
+BBO update #13: BTC at 1770830641632
+BBO update #14: BTC at 1770830641766
+BBO update #15: BTC at 1770830641832
+BBO update #16: BTC at 1770830642011
+BBO update #17: BTC at 1770830642094
+BBO update #18: BTC at 1770830642160

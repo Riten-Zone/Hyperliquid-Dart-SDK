@@ -1,0 +1,18 @@
+Test: twap_test
+Status: PASSED
+Category: exchange
+
+Key Output:
+00:00 +0: TWAP integration (setUpAll)
+00:00 +0: TWAP integration places and cancels TWAP order
+Placing TWAP order for 0.001 BTC over 5 minutes
+TWAP order placed: ok
+Response: {type: twapOrder, data: {status: {running: {twapId: 1594296}}}}
+TWAP ID: 1594296
+Canceling TWAP order 1594296
+✓ TWAP order canceled: ok
+00:04 +1: TWAP integration validates TWAP duration constraints
+✓ 1-minute TWAP accepted
+00:05 +2: TWAP integration TWAP with randomized execution
+✓ Randomized TWAP accepted
+00:07 +3: TWAP integration (tearDownAll)

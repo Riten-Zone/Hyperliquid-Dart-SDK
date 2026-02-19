@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="hyperliquid_dart library API docs, for the Dart programming language.">
+  <title>hyperliquid_dart library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li class="self-crumb">hyperliquid_dart.dart</li>
+  </ol>
+  <div class="self-name">hyperliquid_dart</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="hyperliquid_dart&#47;hyperliquid_dart-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">hyperliquid_dart</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>Dart SDK for the Hyperliquid DEX.</p>
+<p>Provides REST API, WebSocket subscriptions, EIP-712 signing, and
+order management for the Hyperliquid perpetual futures exchange.</p>
+<h2 id="quick-start">Quick Start</h2>
+<pre class="language-dart"><code class="language-dart">import 'package:hyperliquid_dart/hyperliquid_dart.dart';
+
+// Read-only queries (no wallet needed):
+final info = InfoClient();
+final candles = await info.candleSnapshot(
+  coin: 'BTC',
+  interval: '1h',
+  startTime: DateTime.now().subtract(Duration(days: 1)).millisecondsSinceEpoch,
+  endTime: DateTime.now().millisecondsSinceEpoch,
+);
+final mids = await info.allMids();
+info.close();
+
+// Trading (requires a WalletAdapter):
+final exchange = ExchangeClient(wallet: myWalletAdapter);
+await exchange.placeOrder(
+  orders: [OrderWire.limit(asset: 0, isBuy: true, limitPx: '50000', sz: '0.001')],
+);
+exchange.close();
+
+// Real-time data:
+final ws = WebSocketClient();
+await ws.connect();
+final handle = ws.subscribeL2Book('BTC', (book) =&gt; print(book.bids.length));
+// ... later:
+await handle.cancel();
+await ws.dispose();
+</code></pre>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="ActiveStakingDiscount">
+  <span class="name "><a href="../hyperliquid_dart/ActiveStakingDiscount-class.html">ActiveStakingDiscount</a></span> 
+
+</dt>
+<dd>
+  Active staking discount information
+</dd>
+
+          <dt id="AssetContext">
+  <span class="name "><a href="../hyperliquid_dart/AssetContext-class.html">AssetContext</a></span> 
+
+</dt>
+<dd>
+  Asset context data (funding rate, open interest, prices).
+</dd>
+
+          <dt id="AssetMetadata">
+  <span class="name "><a href="../hyperliquid_dart/AssetMetadata-class.html">AssetMetadata</a></span> 
+
+</dt>
+<dd>
+  Asset metadata from the universe array.
+</dd>
+
+          <dt id="BboLevel">
+  <span class="name "><a href="../hyperliquid_dart/BboLevel-class.html">BboLevel</a></span> 
+
+</dt>
+<dd>
+  Single BBO level (bid or ask).
+</dd>
+
+          <dt id="BboUpdate">
+  <span class="name "><a href="../hyperliquid_dart/BboUpdate-class.html">BboUpdate</a></span> 
+
+</dt>
+<dd>
+  Best bid-offer update from WebSocket.
+</dd>
+
+          <dt id="BuilderFee">
+  <span class="name "><a href="../hyperliquid_dart/BuilderFee-class.html">BuilderFee</a></span> 
+
+</dt>
+<dd>
+  Builder fee configuration for order placement.
+</dd>
+
+          <dt id="CancelWire">
+  <span class="name "><a href="../hyperliquid_dart/CancelWire-class.html">CancelWire</a></span> 
+
+</dt>
+<dd>
+  Cancel request wire format.
+</dd>
+
+          <dt id="Candle">
+  <span class="name "><a href="../hyperliquid_dart/Candle-class.html">Candle</a></span> 
+
+</dt>
+<dd>
+  Raw candle data from Hyperliquid API.
+</dd>
+
+          <dt id="CandleIntervals">
+  <span class="name "><a href="../hyperliquid_dart/CandleIntervals-class.html">CandleIntervals</a></span> 
+
+</dt>
+<dd>
+  Candle interval strings accepted by the Hyperliquid API.
+</dd>
+
+          <dt id="ClearinghouseState">
+  <span class="name "><a href="../hyperliquid_dart/ClearinghouseState-class.html">ClearinghouseState</a></span> 
+
+</dt>
+<dd>
+  User's clearinghouse state (positions, margin, etc.).
+</dd>
+
+          <dt id="DailyUserVolume">
+  <span class="name "><a href="../hyperliquid_dart/DailyUserVolume-class.html">DailyUserVolume</a></span> 
+
+</dt>
+<dd>
+  Daily user trading volume
+</dd>
+
+          <dt id="ExchangeClient">
+  <span class="name "><a href="../hyperliquid_dart/ExchangeClient-class.html">ExchangeClient</a></span> 
+
+</dt>
+<dd>
+  Client for placing orders, cancelling orders, updating leverage, and other
+write operations on the Hyperliquid exchange.
+</dd>
+
+          <dt id="ExchangeResponse">
+  <span class="name "><a href="../hyperliquid_dart/ExchangeResponse-class.html">ExchangeResponse</a></span> 
+
+</dt>
+<dd>
+  Response from the Hyperliquid exchange endpoint.
+</dd>
+
+          <dt id="FeeTrial">
+  <span class="name "><a href="../hyperliquid_dart/FeeTrial-class.html">FeeTrial</a></span> 
+
+</dt>
+<dd>
+  Fee trial information
+</dd>
+
+          <dt id="FollowerState">
+  <span class="name "><a href="../hyperliquid_dart/FollowerState-class.html">FollowerState</a></span> 
+
+</dt>
+<dd>
+  Follower state for a specific user (structure TBD).
+</dd>
+
+          <dt id="FundingHistoryEntry">
+  <span class="name "><a href="../hyperliquid_dart/FundingHistoryEntry-class.html">FundingHistoryEntry</a></span> 
+
+</dt>
+<dd>
+  Funding history entry.
+</dd>
+
+          <dt id="HistoricalOrder">
+  <span class="name "><a href="../hyperliquid_dart/HistoricalOrder-class.html">HistoricalOrder</a></span> 
+
+</dt>
+<dd>
+  A historical order with status.
+</dd>
+
+          <dt id="HttpTransport">
+  <span class="name "><a href="../hyperliquid_dart/HttpTransport-class.html">HttpTransport</a></span> 
+
+</dt>
+<dd>
+  HTTP transport for making REST API calls to Hyperliquid.
+</dd>
+
+          <dt id="HyperliquidEip712">
+  <span class="name "><a href="../hyperliquid_dart/HyperliquidEip712-class.html">HyperliquidEip712</a></span> 
+
+</dt>
+<dd>
+  EIP-712 signing constants for Hyperliquid.
+</dd>
+
+          <dt id="HyperliquidUrls">
+  <span class="name "><a href="../hyperliquid_dart/HyperliquidUrls-class.html">HyperliquidUrls</a></span> 
+
+</dt>
+<dd>
+  Base URLs for Hyperliquid API endpoints.
+</dd>
+
+          <dt id="InfoClient">
+  <span class="name "><a href="../hyperliquid_dart/InfoClient-class.html">InfoClient</a></span> 
+
+</dt>
+<dd>
+  Client for querying Hyperliquid's Info endpoint (read-only).
+</dd>
+
+          <dt id="L2Book">
+  <span class="name "><a href="../hyperliquid_dart/L2Book-class.html">L2Book</a></span> 
+
+</dt>
+<dd>
+  L2 orderbook snapshot.
+</dd>
+
+          <dt id="L2Level">
+  <span class="name "><a href="../hyperliquid_dart/L2Level-class.html">L2Level</a></span> 
+
+</dt>
+<dd>
+  L2 orderbook level: <code>price, size</code>.
+</dd>
+
+          <dt id="LeadingVault">
+  <span class="name "><a href="../hyperliquid_dart/LeadingVault-class.html">LeadingVault</a></span> 
+
+</dt>
+<dd>
+  Vault information for vaults managed by a specific leader.
+Note: The API currently only returns address and name fields.
+</dd>
+
+          <dt id="LedgerDelta">
+  <span class="name "><a href="../hyperliquid_dart/LedgerDelta-class.html">LedgerDelta</a></span> 
+
+</dt>
+<dd>
+  Ledger delta (update details)
+</dd>
+
+          <dt id="LedgerUpdate">
+  <span class="name "><a href="../hyperliquid_dart/LedgerUpdate-class.html">LedgerUpdate</a></span> 
+
+</dt>
+<dd>
+  Non-funding ledger update entry
+</dd>
+
+          <dt id="Meta">
+  <span class="name "><a href="../hyperliquid_dart/Meta-class.html">Meta</a></span> 
+
+</dt>
+<dd>
+  Meta response containing asset universe and collateral token.
+</dd>
+
+          <dt id="MetaAndAssetCtxs">
+  <span class="name "><a href="../hyperliquid_dart/MetaAndAssetCtxs-class.html">MetaAndAssetCtxs</a></span> 
+
+</dt>
+<dd>
+  Combined meta and asset contexts response.
+</dd>
+
+          <dt id="ModifyWire">
+  <span class="name "><a href="../hyperliquid_dart/ModifyWire-class.html">ModifyWire</a></span> 
+
+</dt>
+<dd>
+  Modify request wire format.
+</dd>
+
+          <dt id="NotificationMessage">
+  <span class="name "><a href="../hyperliquid_dart/NotificationMessage-class.html">NotificationMessage</a></span> 
+
+</dt>
+<dd>
+  Notification message.
+</dd>
+
+          <dt id="OpenOrder">
+  <span class="name "><a href="../hyperliquid_dart/OpenOrder-class.html">OpenOrder</a></span> 
+
+</dt>
+<dd>
+  A single open order.
+</dd>
+
+          <dt id="OrderDetail">
+  <span class="name "><a href="../hyperliquid_dart/OrderDetail-class.html">OrderDetail</a></span> 
+
+</dt>
+<dd>
+  Order detail with status information.
+</dd>
+
+          <dt id="OrderInfo">
+  <span class="name "><a href="../hyperliquid_dart/OrderInfo-class.html">OrderInfo</a></span> 
+
+</dt>
+<dd>
+  Detailed order information.
+</dd>
+
+          <dt id="OrderStatusResponse">
+  <span class="name "><a href="../hyperliquid_dart/OrderStatusResponse-class.html">OrderStatusResponse</a></span> 
+
+</dt>
+<dd>
+  Order status response.
+</dd>
+
+          <dt id="OrderWire">
+  <span class="name "><a href="../hyperliquid_dart/OrderWire-class.html">OrderWire</a></span> 
+
+</dt>
+<dd>
+  Wire format for a single order (field order is critical for msgpack).
+</dd>
+
+          <dt id="PerpDex">
+  <span class="name "><a href="../hyperliquid_dart/PerpDex-class.html">PerpDex</a></span> 
+
+</dt>
+<dd>
+  HIP-3 builder-deployed perpetual DEX information
+</dd>
+
+          <dt id="PortfolioPeriod">
+  <span class="name "><a href="../hyperliquid_dart/PortfolioPeriod-class.html">PortfolioPeriod</a></span> 
+
+</dt>
+<dd>
+  Portfolio data for a specific time period.
+</dd>
+
+          <dt id="PortfolioResponse">
+  <span class="name "><a href="../hyperliquid_dart/PortfolioResponse-class.html">PortfolioResponse</a></span> 
+
+</dt>
+<dd>
+  Portfolio response with performance data across time periods.
+</dd>
+
+          <dt id="PrivateKeyWalletAdapter">
+  <span class="name "><a href="../hyperliquid_dart/PrivateKeyWalletAdapter-class.html">PrivateKeyWalletAdapter</a></span> 
+
+</dt>
+<dd>
+  Signs EIP-712 typed data using a raw secp256k1 private key.
+</dd>
+
+          <dt id="SignatureComponents">
+  <span class="name "><a href="../hyperliquid_dart/SignatureComponents-class.html">SignatureComponents</a></span> 
+
+</dt>
+<dd>
+  Parsed signature components from an EIP-712 signature.
+</dd>
+
+          <dt id="SpotAssetContext">
+  <span class="name "><a href="../hyperliquid_dart/SpotAssetContext-class.html">SpotAssetContext</a></span> 
+
+</dt>
+<dd>
+  Spot asset context (market data)
+</dd>
+
+          <dt id="SpotBalance">
+  <span class="name "><a href="../hyperliquid_dart/SpotBalance-class.html">SpotBalance</a></span> 
+
+</dt>
+<dd>
+  Spot balance entry.
+</dd>
+
+          <dt id="SpotClearinghouseState">
+  <span class="name "><a href="../hyperliquid_dart/SpotClearinghouseState-class.html">SpotClearinghouseState</a></span> 
+
+</dt>
+<dd>
+  Spot clearinghouse state.
+</dd>
+
+          <dt id="SpotMeta">
+  <span class="name "><a href="../hyperliquid_dart/SpotMeta-class.html">SpotMeta</a></span> 
+
+</dt>
+<dd>
+  Spot metadata response
+</dd>
+
+          <dt id="SpotMetaAndAssetCtxs">
+  <span class="name "><a href="../hyperliquid_dart/SpotMetaAndAssetCtxs-class.html">SpotMetaAndAssetCtxs</a></span> 
+
+</dt>
+<dd>
+  Combined spot metadata and asset contexts
+</dd>
+
+          <dt id="SpotToken">
+  <span class="name "><a href="../hyperliquid_dart/SpotToken-class.html">SpotToken</a></span> 
+
+</dt>
+<dd>
+  Spot token metadata
+</dd>
+
+          <dt id="SpotUniverse">
+  <span class="name "><a href="../hyperliquid_dart/SpotUniverse-class.html">SpotUniverse</a></span> 
+
+</dt>
+<dd>
+  Spot universe definition
+</dd>
+
+          <dt id="SubAccount">
+  <span class="name "><a href="../hyperliquid_dart/SubAccount-class.html">SubAccount</a></span> 
+
+</dt>
+<dd>
+  Sub-account information
+</dd>
+
+          <dt id="SubAccountBalance">
+  <span class="name "><a href="../hyperliquid_dart/SubAccountBalance-class.html">SubAccountBalance</a></span> 
+
+</dt>
+<dd>
+  Sub-account balance information
+</dd>
+
+          <dt id="SubAccountSpotState">
+  <span class="name "><a href="../hyperliquid_dart/SubAccountSpotState-class.html">SubAccountSpotState</a></span> 
+
+</dt>
+<dd>
+  Sub-account spot state
+</dd>
+
+          <dt id="SubscriptionHandle">
+  <span class="name "><a href="../hyperliquid_dart/SubscriptionHandle-class.html">SubscriptionHandle</a></span> 
+
+</dt>
+<dd>
+  A handle returned when subscribing, used to unsubscribe later.
+</dd>
+
+          <dt id="TokenDetails">
+  <span class="name "><a href="../hyperliquid_dart/TokenDetails-class.html">TokenDetails</a></span> 
+
+</dt>
+<dd>
+  Token details response
+</dd>
+
+          <dt id="Trade">
+  <span class="name "><a href="../hyperliquid_dart/Trade-class.html">Trade</a></span> 
+
+</dt>
+<dd>
+  A recent trade.
+</dd>
+
+          <dt id="TwapCancelWire">
+  <span class="name "><a href="../hyperliquid_dart/TwapCancelWire-class.html">TwapCancelWire</a></span> 
+
+</dt>
+<dd>
+  TWAP cancel request wire format.
+</dd>
+
+          <dt id="TwapHistoryEvent">
+  <span class="name "><a href="../hyperliquid_dart/TwapHistoryEvent-class.html">TwapHistoryEvent</a></span> 
+
+</dt>
+<dd>
+  Historical TWAP execution event.
+</dd>
+
+          <dt id="TwapSliceFill">
+  <span class="name "><a href="../hyperliquid_dart/TwapSliceFill-class.html">TwapSliceFill</a></span> 
+
+</dt>
+<dd>
+  Individual TWAP slice fill event.
+</dd>
+
+          <dt id="TwapState">
+  <span class="name "><a href="../hyperliquid_dart/TwapState-class.html">TwapState</a></span> 
+
+</dt>
+<dd>
+  TWAP execution state.
+</dd>
+
+          <dt id="TwapWire">
+  <span class="name "><a href="../hyperliquid_dart/TwapWire-class.html">TwapWire</a></span> 
+
+</dt>
+<dd>
+  TWAP (Time-Weighted Average Price) order wire format.
+</dd>
+
+          <dt id="UserFees">
+  <span class="name "><a href="../hyperliquid_dart/UserFees-class.html">UserFees</a></span> 
+
+</dt>
+<dd>
+  User fee structure and trading costs
+</dd>
+
+          <dt id="UserFill">
+  <span class="name "><a href="../hyperliquid_dart/UserFill-class.html">UserFill</a></span> 
+
+</dt>
+<dd>
+  A user fill (trade execution).
+</dd>
+
+          <dt id="UserFunding">
+  <span class="name "><a href="../hyperliquid_dart/UserFunding-class.html">UserFunding</a></span> 
+
+</dt>
+<dd>
+  A user funding payment.
+</dd>
+
+          <dt id="UserVaultEquity">
+  <span class="name "><a href="../hyperliquid_dart/UserVaultEquity-class.html">UserVaultEquity</a></span> 
+
+</dt>
+<dd>
+  User's vault equity position.
+</dd>
+
+          <dt id="VaultDetails">
+  <span class="name "><a href="../hyperliquid_dart/VaultDetails-class.html">VaultDetails</a></span> 
+
+</dt>
+<dd>
+  Detailed vault information including performance, followers, and configuration.
+</dd>
+
+          <dt id="VaultFollower">
+  <span class="name "><a href="../hyperliquid_dart/VaultFollower-class.html">VaultFollower</a></span> 
+
+</dt>
+<dd>
+  Individual vault follower information.
+</dd>
+
+          <dt id="VaultPortfolio">
+  <span class="name "><a href="../hyperliquid_dart/VaultPortfolio-class.html">VaultPortfolio</a></span> 
+
+</dt>
+<dd>
+  Complete vault portfolio with performance metrics for different time periods.
+</dd>
+
+          <dt id="VaultRelationship">
+  <span class="name "><a href="../hyperliquid_dart/VaultRelationship-class.html">VaultRelationship</a></span> 
+
+</dt>
+<dd>
+  Vault relationship type and data.
+</dd>
+
+          <dt id="VaultRelationshipData">
+  <span class="name "><a href="../hyperliquid_dart/VaultRelationshipData-class.html">VaultRelationshipData</a></span> 
+
+</dt>
+<dd>
+  Vault relationship data for parent/child vaults.
+</dd>
+
+          <dt id="VaultSummary">
+  <span class="name "><a href="../hyperliquid_dart/VaultSummary-class.html">VaultSummary</a></span> 
+
+</dt>
+<dd>
+  Lightweight vault summary information.
+</dd>
+
+          <dt id="WalletAdapter">
+  <span class="name "><a href="../hyperliquid_dart/WalletAdapter-class.html">WalletAdapter</a></span> 
+
+</dt>
+<dd>
+  Abstract wallet adapter interface for signing Hyperliquid transactions.
+</dd>
+
+          <dt id="WebData3">
+  <span class="name "><a href="../hyperliquid_dart/WebData3-class.html">WebData3</a></span> 
+
+</dt>
+<dd>
+  WebData3 aggregate user information.
+</dd>
+
+          <dt id="WebSocketClient">
+  <span class="name "><a href="../hyperliquid_dart/WebSocketClient-class.html">WebSocketClient</a></span> 
+
+</dt>
+<dd>
+  High-level WebSocket client for subscribing to Hyperliquid real-time data.
+</dd>
+
+          <dt id="WebSocketTransport">
+  <span class="name "><a href="../hyperliquid_dart/WebSocketTransport-class.html">WebSocketTransport</a></span> 
+
+</dt>
+<dd>
+  WebSocket transport with automatic reconnection and message routing.
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+      <dl>
+          <dt id="MarginMode">
+  <span class="name "><a href="../hyperliquid_dart/MarginMode.html">MarginMode</a></span> 
+
+</dt>
+<dd>
+  Leverage mode.
+</dd>
+
+          <dt id="OrderGrouping">
+  <span class="name "><a href="../hyperliquid_dart/OrderGrouping.html">OrderGrouping</a></span> 
+
+</dt>
+<dd>
+  Order grouping type.
+</dd>
+
+          <dt id="Side">
+  <span class="name "><a href="../hyperliquid_dart/Side.html">Side</a></span> 
+
+</dt>
+<dd>
+  Order side.
+</dd>
+
+          <dt id="SubscriptionType">
+  <span class="name "><a href="../hyperliquid_dart/SubscriptionType.html">SubscriptionType</a></span> 
+
+</dt>
+<dd>
+  WebSocket subscription types.
+</dd>
+
+          <dt id="TimeInForce">
+  <span class="name "><a href="../hyperliquid_dart/TimeInForce.html">TimeInForce</a></span> 
+
+</dt>
+<dd>
+  Time-in-force for limit orders.
+</dd>
+
+          <dt id="TpslType">
+  <span class="name "><a href="../hyperliquid_dart/TpslType.html">TpslType</a></span> 
+
+</dt>
+<dd>
+  Take-profit / stop-loss type.
+</dd>
+
+          <dt id="WsConnectionState">
+  <span class="name "><a href="../hyperliquid_dart/WsConnectionState.html">WsConnectionState</a></span> 
+
+</dt>
+<dd>
+  Connection state of the WebSocket.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+    <section class="summary offset-anchor" id="constants">
+      <h2>Constants</h2>
+      <dl class="properties">
+          <dt id="approveBuilderFeeTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/approveBuilderFeeTypes-constant.html">approveBuilderFeeTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for user-signed actions (e.g. approveBuilderFee).
+  
+
+</dd>
+
+          <dt id="l1ActionTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/l1ActionTypes-constant.html">l1ActionTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for Hyperliquid L1 actions.
+  
+
+</dd>
+
+          <dt id="sendAssetTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/sendAssetTypes-constant.html">sendAssetTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for sendAsset.
+  
+
+</dd>
+
+          <dt id="spotSendTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/spotSendTypes-constant.html">spotSendTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for spotSend.
+  
+
+</dd>
+
+          <dt id="usdClassTransferTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/usdClassTransferTypes-constant.html">usdClassTransferTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for usdClassTransfer.
+  
+
+</dd>
+
+          <dt id="usdSendTypes" class="constant">
+    <span class="name "><a href="../hyperliquid_dart/usdSendTypes-constant.html">usdSendTypes</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  EIP-712 type definitions for usdSend.
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+      <dl class="callables">
+          <dt id="buildApproveBuilderFeeTypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildApproveBuilderFeeTypedData.html">buildApproveBuilderFeeTypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildApproveBuilderFeeTypedData-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="buildApproveBuilderFeeTypedData-param-maxFeeRate"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">maxFeeRate</span>, </span><span class="parameter" id="buildApproveBuilderFeeTypedData-param-builder"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">builder</span>, </span><span class="parameter" id="buildApproveBuilderFeeTypedData-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span><span class="parameter" id="buildApproveBuilderFeeTypedData-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for approveBuilderFee.
+  
+
+</dd>
+
+          <dt id="buildL1TypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildL1TypedData.html">buildL1TypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildL1TypedData-param-actionHash"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">actionHash</span>, </span><span class="parameter" id="buildL1TypedData-param-isTestnet"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isTestnet</span> = <span class="default-value">false</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for an L1 action.
+  
+
+</dd>
+
+          <dt id="buildSendAssetTypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildSendAssetTypedData.html">buildSendAssetTypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildSendAssetTypedData-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-destination"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destination</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-sourceDex"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sourceDex</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-destinationDex"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destinationDex</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-token"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-amount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">amount</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-fromSubAccount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">fromSubAccount</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span><span class="parameter" id="buildSendAssetTypedData-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for sendAsset action.
+  
+
+</dd>
+
+          <dt id="buildSpotSendTypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildSpotSendTypedData.html">buildSpotSendTypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildSpotSendTypedData-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="buildSpotSendTypedData-param-destination"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destination</span>, </span><span class="parameter" id="buildSpotSendTypedData-param-token"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span><span class="parameter" id="buildSpotSendTypedData-param-amount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">amount</span>, </span><span class="parameter" id="buildSpotSendTypedData-param-time"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">time</span>, </span><span class="parameter" id="buildSpotSendTypedData-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for spotSend action.
+  
+
+</dd>
+
+          <dt id="buildSubscriptionMessage" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildSubscriptionMessage.html">buildSubscriptionMessage</a></span><span class="signature">(<wbr><span class="parameter" id="buildSubscriptionMessage-param-type"><span class="type-annotation"><a href="../hyperliquid_dart/SubscriptionType.html">SubscriptionType</a></span> <span class="parameter-name">type</span>, {</span><span class="parameter" id="buildSubscriptionMessage-param-coin"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">coin</span>, </span><span class="parameter" id="buildSubscriptionMessage-param-interval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">interval</span>, </span><span class="parameter" id="buildSubscriptionMessage-param-user"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">user</span>, </span><span class="parameter" id="buildSubscriptionMessage-param-nSigFigs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">nSigFigs</span>, </span><span class="parameter" id="buildSubscriptionMessage-param-mantissa"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">mantissa</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build the subscription message payload for the WebSocket.
+  
+
+</dd>
+
+          <dt id="buildUsdClassTransferTypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildUsdClassTransferTypedData.html">buildUsdClassTransferTypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildUsdClassTransferTypedData-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="buildUsdClassTransferTypedData-param-amount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">amount</span>, </span><span class="parameter" id="buildUsdClassTransferTypedData-param-toPerp"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">toPerp</span>, </span><span class="parameter" id="buildUsdClassTransferTypedData-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span><span class="parameter" id="buildUsdClassTransferTypedData-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for usdClassTransfer.
+  
+
+</dd>
+
+          <dt id="buildUsdSendTypedData" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/buildUsdSendTypedData.html">buildUsdSendTypedData</a></span><span class="signature">(<wbr>{<span class="parameter" id="buildUsdSendTypedData-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="buildUsdSendTypedData-param-destination"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">destination</span>, </span><span class="parameter" id="buildUsdSendTypedData-param-amount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">amount</span>, </span><span class="parameter" id="buildUsdSendTypedData-param-time"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">time</span>, </span><span class="parameter" id="buildUsdSendTypedData-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Build EIP-712 typed data for usdSend.
+  
+
+</dd>
+
+          <dt id="createL1ActionHash" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/createL1ActionHash.html">createL1ActionHash</a></span><span class="signature">(<wbr>{<span class="parameter" id="createL1ActionHash-param-action"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">action</span>, </span><span class="parameter" id="createL1ActionHash-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span><span class="parameter" id="createL1ActionHash-param-vaultAddress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">vaultAddress</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Create the L1 action hash (connectionId) used in EIP-712 signing.
+  
+
+</dd>
+
+          <dt id="getHip3AssetId" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/getHip3AssetId.html">getHip3AssetId</a></span><span class="signature">(<wbr>{<span class="parameter" id="getHip3AssetId-param-perpDexIndex"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">perpDexIndex</span>, </span><span class="parameter" id="getHip3AssetId-param-metaIndex"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">metaIndex</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get the asset ID for a HIP-3 builder-deployed perpetual.
+  
+
+</dd>
+
+          <dt id="getRegularAssetId" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/getRegularAssetId.html">getRegularAssetId</a></span><span class="signature">(<wbr><span class="parameter" id="getRegularAssetId-param-coinSymbol"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">coinSymbol</span>, </span><span class="parameter" id="getRegularAssetId-param-universeNames"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">universeNames</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get the asset ID for a regular perpetual by looking up its index in the
+universe array.
+  
+
+</dd>
+
+          <dt id="isHip3CoinSymbol" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/isHip3CoinSymbol.html">isHip3CoinSymbol</a></span><span class="signature">(<wbr><span class="parameter" id="isHip3CoinSymbol-param-coinSymbol"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">coinSymbol</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check if a coin symbol is a HIP-3 perpetual (format: "dex:asset").
+  
+
+</dd>
+
+          <dt id="parseHip3CoinSymbol" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/parseHip3CoinSymbol.html">parseHip3CoinSymbol</a></span><span class="signature">(<wbr><span class="parameter" id="parseHip3CoinSymbol-param-coinSymbol"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">coinSymbol</span></span>)
+    <span class="returntype parameter">&#8594; (<span class="field">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="field-name">asset</span>, </span><span class="field"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="field-name">dex</span>}</span>)?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Parse a HIP-3 coin symbol into its dex and asset components.
+  
+
+</dd>
+
+          <dt id="parseSignature" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/parseSignature.html">parseSignature</a></span><span class="signature">(<wbr><span class="parameter" id="parseSignature-param-signature"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">signature</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../hyperliquid_dart/SignatureComponents-class.html">SignatureComponents</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Parse an EIP-712 signature hex string into r, s, v components.
+  
+
+</dd>
+
+          <dt id="resolveAssetId" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/resolveAssetId.html">resolveAssetId</a></span><span class="signature">(<wbr><span class="parameter" id="resolveAssetId-param-coinSymbol"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">coinSymbol</span>, </span><span class="parameter" id="resolveAssetId-param-universeNames"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">universeNames</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resolve an asset ID for any coin symbol (regular or HIP-3).
+  
+
+</dd>
+
+          <dt id="signL1Action" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/signL1Action.html">signL1Action</a></span><span class="signature">(<wbr>{<span class="parameter" id="signL1Action-param-wallet"><span>required</span> <span class="type-annotation"><a href="../hyperliquid_dart/WalletAdapter-class.html">WalletAdapter</a></span> <span class="parameter-name">wallet</span>, </span><span class="parameter" id="signL1Action-param-action"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">action</span>, </span><span class="parameter" id="signL1Action-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span><span class="parameter" id="signL1Action-param-isTestnet"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isTestnet</span> = <span class="default-value">false</span>, </span><span class="parameter" id="signL1Action-param-vaultAddress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">vaultAddress</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../hyperliquid_dart/SignatureComponents-class.html">SignatureComponents</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sign a Hyperliquid L1 action.
+  
+
+</dd>
+
+          <dt id="signUserSignedAction" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/signUserSignedAction.html">signUserSignedAction</a></span><span class="signature">(<wbr>{<span class="parameter" id="signUserSignedAction-param-wallet"><span>required</span> <span class="type-annotation"><a href="../hyperliquid_dart/WalletAdapter-class.html">WalletAdapter</a></span> <span class="parameter-name">wallet</span>, </span><span class="parameter" id="signUserSignedAction-param-hyperliquidChain"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">hyperliquidChain</span>, </span><span class="parameter" id="signUserSignedAction-param-primaryType"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">primaryType</span>, </span><span class="parameter" id="signUserSignedAction-param-message"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="signUserSignedAction-param-signatureChainId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">signatureChainId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../hyperliquid_dart/SignatureComponents-class.html">SignatureComponents</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sign a user-signed action (e.g. approveBuilderFee, usdClassTransfer, usdSend).
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+      <dl>
+          
+  <dt id="SubscriptionHandler" class="callable">
+    <span class="name"><a href="../hyperliquid_dart/SubscriptionHandler.html">SubscriptionHandler</a></span>&lt;<wbr><span class="type-parameter">T</span>&gt;<span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-data"><span class="type-annotation">T</span> <span class="parameter-name">data</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Callback type for subscription handlers.
+    
+
+  </dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="exceptions">
+      <h2>Exceptions / Errors</h2>
+      <dl>
+          <dt id="HyperliquidApiException">
+  <span class="name "><a href="../hyperliquid_dart/HyperliquidApiException-class.html">HyperliquidApiException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when the Hyperliquid API returns an error.
+</dd>
+
+      </dl>
+    </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li class="self-crumb">hyperliquid_dart.dart</li>
+</ol>
+
+    <h5><span class="package-name">hyperliquid_dart</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../hyperliquid_dart/">hyperliquid_dart</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>hyperliquid_dart library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

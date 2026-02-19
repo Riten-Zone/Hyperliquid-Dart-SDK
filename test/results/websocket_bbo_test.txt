@@ -1,0 +1,151 @@
+00:00 +0: loading test/websocket/bbo_test.dart
+00:00 +0: BBO subscription integration (setUpAll)
+00:01 +0: BBO subscription integration subscribes to BTC BBO and receives updates
+BBO update #1: BTC at 1770830640484
+  Bid: 66520.0 @ 16.23217
+  Ask: 66525.0 @ 0.06297
+BBO update #2: BTC at 1770830640542
+  Bid: 66524.0 @ 45.09582
+  Ask: 66525.0 @ 0.06297
+BBO update #3: BTC at 1770830640715
+  Bid: 66524.0 @ 54.49307
+  Ask: 66530.0 @ 0.0002
+BBO update #4: BTC at 1770830640772
+  Bid: 66529.0 @ 6.92373
+  Ask: 66530.0 @ 0.0002
+BBO update #5: BTC at 1770830640916
+  Bid: 66529.0 @ 8.79802
+  Ask: 66530.0 @ 0.0002
+BBO update #6: BTC at 1770830640989
+  Bid: 66529.0 @ 15.13623
+  Ask: 66530.0 @ 0.0002
+BBO update #7: BTC at 1770830641119
+  Bid: 66531.0 @ 4.84108
+  Ask: 66533.0 @ 0.0015
+BBO update #8: BTC at 1770830641183
+  Bid: 66532.0 @ 4.91646
+  Ask: 66533.0 @ 0.0015
+BBO update #9: BTC at 1770830641327
+  Bid: 66532.0 @ 19.37981
+  Ask: 66533.0 @ 0.20269
+BBO update #10: BTC at 1770830641399
+  Bid: 66532.0 @ 16.31197
+  Ask: 66533.0 @ 0.20269
+BBO update #11: BTC at 1770830641429
+  Bid: 66532.0 @ 14.68879
+  Ask: 66533.0 @ 0.20269
+BBO update #12: BTC at 1770830641566
+  Bid: 66532.0 @ 11.69064
+  Ask: 66533.0 @ 0.55597
+BBO update #13: BTC at 1770830641632
+  Bid: 66532.0 @ 9.99213
+  Ask: 66533.0 @ 1.01849
+BBO update #14: BTC at 1770830641766
+  Bid: 66532.0 @ 3.02783
+  Ask: 66533.0 @ 1.18246
+BBO update #15: BTC at 1770830641832
+  Bid: 66532.0 @ 2.91507
+  Ask: 66533.0 @ 2.53894
+BBO update #16: BTC at 1770830642011
+  Bid: 66532.0 @ 2.744
+  Ask: 66533.0 @ 2.29834
+BBO update #17: BTC at 1770830642094
+  Bid: 66532.0 @ 13.05996
+  Ask: 66534.0 @ 0.00016
+BBO update #18: BTC at 1770830642160
+  Bid: 66533.0 @ 4.38808
+  Ask: 66534.0 @ 0.00016
+BBO update #19: BTC at 1770830642242
+  Bid: 66533.0 @ 39.77322
+  Ask: 66534.0 @ 0.00016
+BBO update #20: BTC at 1770830642295
+  Bid: 66533.0 @ 53.33167
+  Ask: 66534.0 @ 0.00016
+BBO update #21: BTC at 1770830642372
+  Bid: 66533.0 @ 76.4116
+  Ask: 66534.0 @ 0.00016
+BBO update #22: BTC at 1770830642447
+  Bid: 66533.0 @ 108.56213
+  Ask: 66534.0 @ 0.00016
+BBO update #23: BTC at 1770830642562
+  Bid: 66533.0 @ 95.06492
+  Ask: 66534.0 @ 0.00016
+BBO update #24: BTC at 1770830642677
+  Bid: 66533.0 @ 52.79622
+  Ask: 66539.0 @ 0.01917
+BBO update #25: BTC at 1770830642764
+  Bid: 66538.0 @ 24.30788
+  Ask: 66539.0 @ 0.01917
+BBO update #26: BTC at 1770830642829
+  Bid: 66538.0 @ 37.81184
+  Ask: 66539.0 @ 0.01917
+BBO update #27: BTC at 1770830642883
+  Bid: 66538.0 @ 44.17205
+  Ask: 66539.0 @ 0.01917
+BBO update #28: BTC at 1770830643163
+  Bid: 66538.0 @ 42.72622
+  Ask: 66539.0 @ 0.01894
+BBO update #29: BTC at 1770830643363
+  Bid: 66538.0 @ 30.49728
+  Ask: 66539.0 @ 0.01894
+BBO update #30: BTC at 1770830643417
+  Bid: 66538.0 @ 32.98284
+  Ask: 66539.0 @ 0.01594
+BBO update #31: BTC at 1770830643479
+  Bid: 66538.0 @ 34.05613
+  Ask: 66539.0 @ 0.01594
+BBO update #32: BTC at 1770830643562
+  Bid: 66538.0 @ 32.60266
+  Ask: 66539.0 @ 0.01594
+BBO update #33: BTC at 1770830643658
+  Bid: 66538.0 @ 33.70646
+  Ask: 66539.0 @ 0.01594
+BBO update #34: BTC at 1770830643785
+  Bid: 66538.0 @ 39.13708
+  Ask: 66539.0 @ 0.02414
+BBO update #35: BTC at 1770830643969
+  Bid: 66538.0 @ 36.97441
+  Ask: 66539.0 @ 0.02414
+BBO update #36: BTC at 1770830644143
+  Bid: 66538.0 @ 33.63636
+  Ask: 66539.0 @ 0.02414
+BBO update #37: BTC at 1770830644196
+  Bid: 66538.0 @ 35.66627
+  Ask: 66539.0 @ 0.02414
+BBO update #38: BTC at 1770830644292
+  Bid: 66538.0 @ 36.25071
+  Ask: 66541.0 @ 0.01003
+BBO update #39: BTC at 1770830644399
+  Bid: 66540.0 @ 16.13839
+  Ask: 66541.0 @ 0.01003
+BBO update #40: BTC at 1770830644496
+  Bid: 66540.0 @ 41.20691
+  Ask: 66541.0 @ 0.01003
+BBO update #41: BTC at 1770830644606
+  Bid: 66540.0 @ 46.51481
+  Ask: 66541.0 @ 0.01003
+BBO update #42: BTC at 1770830644655
+  Bid: 66540.0 @ 57.36767
+  Ask: 66541.0 @ 0.00987
+BBO update #43: BTC at 1770830644712
+  Bid: 66540.0 @ 62.16642
+  Ask: 66541.0 @ 0.00987
+BBO update #44: BTC at 1770830644918
+  Bid: 66540.0 @ 30.58658
+  Ask: 66541.0 @ 0.02447
+BBO update #45: BTC at 1770830645003
+  Bid: 66540.0 @ 26.73492
+  Ask: 66541.0 @ 0.02447
+✓ Received 45 BBO updates in 5 seconds
+  Last update coin: BTC
+00:06 +1: BBO subscription integration subscribes to multiple coins simultaneously
+✓ BTC subscription: 87 updates (coins: BTC, ETH)
+✓ ETH subscription: 87 updates (coins: BTC, ETH)
+00:11 +2: BBO subscription integration BBO updates have valid structure
+  Received BBO for: BTC
+✓ BBO structure validated
+  Bid: 66572.0 @ 75.818
+  Ask: 66578.0 @ 0.00023
+  Spread: $6.0
+00:11 +3: BBO subscription integration (tearDownAll)
+00:11 +3: All tests passed!

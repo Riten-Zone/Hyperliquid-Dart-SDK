@@ -1,0 +1,9 @@
+00:00 +0: loading test/info/order_status_test.dart
+00:00 +0: orderStatus integration (setUpAll)
+00:00 +0: orderStatus integration returns unknownOid for non-existent order
+✓ unknownOid status returned correctly
+00:01 +1: orderStatus integration returns order status for placed and canceled order
+Placing order at $33277 (BTC mid: $66555.5)
+Warning: No resting order in response. Status: {error: Insufficient margin to place order. asset=0}
+00:02 +2: orderStatus integration (tearDownAll)
+00:02 +2: All tests passed!

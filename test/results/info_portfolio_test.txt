@@ -1,0 +1,16 @@
+00:00 +0: loading test/info/portfolio_test.dart
+00:00 +0: portfolio integration (setUpAll)
+00:00 +0: portfolio integration fetches portfolio data with all time periods
+Portfolio periods: [day, week, month, allTime, perpDay, perpWeek, perpMonth, perpAllTime]
+00:00 +1: portfolio integration portfolio period data structure is valid
+Day period - Account value points: 19
+Day period - PnL points: 19
+Day period - Total volume: 129.67
+Sample account value point: timestamp=1770742920025, value=12.15098
+Sample PnL point: timestamp=1770742920025, pnl=0.0
+00:00 +2: portfolio integration all time period contains complete data
+All-time - Account value points: 23
+All-time - PnL points: 23
+All-time - Total volume: 748.17
+00:01 +3: portfolio integration (tearDownAll)
+00:01 +3: All tests passed!

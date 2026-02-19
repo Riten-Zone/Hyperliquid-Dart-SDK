@@ -1,0 +1,13 @@
+Test: notification_test
+Status: PASSED
+Category: websocket
+
+Key Output:
+00:00 +0: Notification subscription integration (setUpAll)
+00:01 +0: Notification subscription integration subscribes to notifications channel
+✓ No notifications received (account may be inactive)
+00:06 +1: Notification subscription integration notification subscription handles connection
+✓ Notification subscription lifecycle complete
+00:08 +2: Notification subscription integration multiple notification subscriptions
+✓ Multiple handlers managed correctly
+00:11 +3: Notification subscription integration (tearDownAll)

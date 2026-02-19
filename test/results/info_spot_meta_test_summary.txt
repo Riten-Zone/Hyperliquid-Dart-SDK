@@ -1,0 +1,9 @@
+Test: spot_meta_test
+Status: PASSED
+Category: info
+
+Key Output:
+✓ Spot tokens: 443
+✓ Asset contexts: 290
+✓ Token: USDC
+✓ Spot metadata and asset contexts have valid structure

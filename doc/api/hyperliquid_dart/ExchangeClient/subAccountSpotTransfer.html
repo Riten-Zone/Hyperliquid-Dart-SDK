@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the subAccountSpotTransfer method from the ExchangeClient class, for the Dart programming language.">
+  <title>subAccountSpotTransfer method - ExchangeClient class - hyperliquid_dart library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/">hyperliquid_dart.dart</a></li>
+    <li><a href="../../hyperliquid_dart/ExchangeClient-class.html">ExchangeClient</a></li>
+    <li class="self-crumb">subAccountSpotTransfer method</li>
+  </ol>
+  <div class="self-name">subAccountSpotTransfer</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="hyperliquid_dart&#47;ExchangeClient-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">subAccountSpotTransfer</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../hyperliquid_dart/ExchangeResponse-class.html">ExchangeResponse</a></span>&gt;</span></span>
+<span class="name ">subAccountSpotTransfer</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="subAccountSpotTransfer-param-subAccountUser"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">subAccountUser</span>, </span></li>
+<li><span class="parameter" id="subAccountSpotTransfer-param-isDeposit"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isDeposit</span>, </span></li>
+<li><span class="parameter" id="subAccountSpotTransfer-param-token"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
+<li><span class="parameter" id="subAccountSpotTransfer-param-amount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">amount</span>, </span></li>
+</ol>})
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Transfer spot tokens between sub-accounts (spot DEX only).</p>
+<p><code>subAccountUser</code> is the sub-account address (0x...).
+<code>isDeposit</code> true = deposit to sub-account, false = withdraw.
+<code>token</code> token identifier (e.g., "USDC:0x...").
+<code>amount</code> human-readable amount.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">// Deposit 50 USDC to spot sub-account
+await exchange.subAccountSpotTransfer(
+  subAccountUser: '0xYOUR_SUB_ACCOUNT',
+  isDeposit: true,
+  token: 'USDC:0xeb62eee3685fc4c43992febcd9e75443',
+  amount: '50.0',
+);
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;ExchangeResponse&gt; subAccountSpotTransfer({
+  required String subAccountUser,
+  required bool isDeposit,
+  required String token,
+  required String amount,
+}) async {
+  final action = &lt;String, dynamic&gt;{
+    &#39;type&#39;: &#39;subAccountSpotTransfer&#39;,
+    &#39;subAccountUser&#39;: subAccountUser.toLowerCase(),
+    &#39;isDeposit&#39;: isDeposit,
+    &#39;token&#39;: token,
+    &#39;amount&#39;: amount,
+  };
+
+  return _signAndSend(action);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/ExchangeClient-class.html">ExchangeClient</a></li>
+    <li class="self-crumb">subAccountSpotTransfer method</li>
+</ol>
+
+    <h5>ExchangeClient class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

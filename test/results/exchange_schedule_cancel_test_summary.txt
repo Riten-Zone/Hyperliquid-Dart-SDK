@@ -1,0 +1,35 @@
+Test: schedule_cancel_test
+Status: FAILED
+Category: exchange
+
+Error Output:
+00:00 +0: loading test/exchange/schedule_cancel_test.dart
+00:00 +0: scheduleCancel integration (setUpAll)
+00:00 +0: scheduleCancel integration sets schedule cancel time
+Setting schedule cancel time to 2026-02-11 17:33:48.061
+00:00 +0 -1: scheduleCancel integration sets schedule cancel time [E]
+  HyperliquidApiException(200): Cannot set scheduled cancel time until enough volume traded. Required: $1000000. Traded: $748.17.
+  package:hyperliquid_dart/src/clients/exchange_client.dart 354:7  ExchangeClient._signAndSend
+  ===== asynchronous gap ===========================
+  test/exchange/schedule_cancel_test.dart 33:22                    main.<fn>.<fn>
+  
+00:00 +0 -1: scheduleCancel integration updates existing schedule
+Setting initial schedule to 2026-02-11 17:38:48.872
+00:01 +0 -2: scheduleCancel integration updates existing schedule [E]
+  HyperliquidApiException(200): Cannot set scheduled cancel time until enough volume traded. Required: $1000000. Traded: $748.17.
+  package:hyperliquid_dart/src/clients/exchange_client.dart 354:7  ExchangeClient._signAndSend
+  ===== asynchronous gap ===========================
+  test/exchange/schedule_cancel_test.dart 49:23                    main.<fn>.<fn>
+  
+00:01 +0 -2: scheduleCancel integration schedule cancel with different time intervals
+00:02 +0 -3: scheduleCancel integration schedule cancel with different time intervals [E]
+  HyperliquidApiException(200): Cannot set scheduled cancel time until enough volume traded. Required: $1000000. Traded: $748.17.
+  package:hyperliquid_dart/src/clients/exchange_client.dart 354:7  ExchangeClient._signAndSend
+  ===== asynchronous gap ===========================
+  test/exchange/schedule_cancel_test.dart 70:23                    main.<fn>.<fn>
+  
+00:02 +0 -3: scheduleCancel integration (tearDownAll)
+00:02 +0 -3: Some tests failed.
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

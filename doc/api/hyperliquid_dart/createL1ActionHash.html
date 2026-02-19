@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the createL1ActionHash function from the hyperliquid_dart library, for the Dart programming language.">
+  <title>createL1ActionHash function - hyperliquid_dart library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li><a href="../hyperliquid_dart/">hyperliquid_dart.dart</a></li>
+    <li class="self-crumb">createL1ActionHash function</li>
+  </ol>
+  <div class="self-name">createL1ActionHash</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="hyperliquid_dart&#47;hyperliquid_dart-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">createL1ActionHash</span> function 
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+<span class="name ">createL1ActionHash</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="createL1ActionHash-param-action"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">action</span>, </span></li>
+<li><span class="parameter" id="createL1ActionHash-param-nonce"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">nonce</span>, </span></li>
+<li><span class="parameter" id="createL1ActionHash-param-vaultAddress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">vaultAddress</span>, </span></li>
+</ol>})
+
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Create the L1 action hash (connectionId) used in EIP-712 signing.</p>
+<p>This replicates the behavior of <code>@nktkas/hyperliquid</code>'s
+<code>createL1ActionHash</code> function:</p>
+<ol>
+<li>Msgpack-encode the action</li>
+<li>Append nonce as big-endian uint64</li>
+<li>Append vaultAddress byte (0 if no vault, 1 + address bytes if vault)</li>
+<li>Keccak256 hash the result</li>
+</ol>
+<p>Returns the hash as a <code>0x</code>-prefixed hex string.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">String createL1ActionHash({
+  required Map&lt;String, dynamic&gt; action,
+  required int nonce,
+  String? vaultAddress,
+}) {
+  &#47;&#47; 1. Msgpack-encode the action.
+  final actionBytes = msgpack.serialize(action);
+
+  &#47;&#47; 2. Encode nonce as big-endian uint64 (8 bytes).
+  final nonceBytes = Uint8List(8);
+  final bd = ByteData.view(nonceBytes.buffer);
+  bd.setUint64(0, nonce);
+
+  &#47;&#47; 3. Encode vault address.
+  Uint8List vaultBytes;
+  if (vaultAddress != null &amp;&amp; vaultAddress.isNotEmpty) {
+    final addrHex = vaultAddress.startsWith(&#39;0x&#39;)
+        ? vaultAddress.substring(2)
+        : vaultAddress;
+    final addrBytes = _hexToBytes(addrHex);
+    vaultBytes = Uint8List(1 + addrBytes.length);
+    vaultBytes[0] = 1;
+    vaultBytes.setRange(1, vaultBytes.length, addrBytes);
+  } else {
+    vaultBytes = Uint8List.fromList([0]);
+  }
+
+  &#47;&#47; 4. Concatenate: actionBytes + nonceBytes + vaultBytes
+  final combined = Uint8List(
+      actionBytes.length + nonceBytes.length + vaultBytes.length);
+  combined.setRange(0, actionBytes.length, actionBytes);
+  combined.setRange(
+      actionBytes.length, actionBytes.length + nonceBytes.length, nonceBytes);
+  combined.setRange(actionBytes.length + nonceBytes.length, combined.length,
+      vaultBytes);
+
+  &#47;&#47; 5. Keccak256 hash.
+  final digest = KeccakDigest(256);
+  final hash = Uint8List(digest.digestSize);
+  digest.update(combined, 0, combined.length);
+  digest.doFinal(hash, 0);
+
+  return &#39;0x${_bytesToHex(hash)}&#39;;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li><a href="../hyperliquid_dart/">hyperliquid_dart</a></li>
+    <li class="self-crumb">createL1ActionHash function</li>
+</ol>
+
+    <h5>hyperliquid_dart library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

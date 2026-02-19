@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-02-11T17:25:07Z",
+  "total": 13,
+  "passed": 12,
+  "failed": 1,
+  "skipped": 0,
+  "pass_rate": "92%",
+  "categories": {
+    "info": 4,
+    "exchange": 3,
+    "websocket": 6
+  }
+}

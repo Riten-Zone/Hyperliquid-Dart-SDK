@@ -1,0 +1,10 @@
+00:00 +0: loading test/websocket/twap_history_test.dart
+00:00 +0: TWAP history subscription integration (setUpAll)
+00:01 +0: TWAP history subscription integration subscribes to TWAP history channel
+TWAP history update #1: 0 events
+Received 1 TWAP history updates
+✓ No TWAP history (account may not have historical TWAPs)
+00:06 +1: TWAP history subscription integration TWAP history subscription handles connection
+✓ TWAP history subscription lifecycle complete
+00:08 +2: TWAP history subscription integration (tearDownAll)
+00:08 +2: All tests passed!

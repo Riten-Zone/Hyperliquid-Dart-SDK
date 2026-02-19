@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the OrderWire class from the hyperliquid_dart library, for the Dart programming language.">
+  <title>OrderWire class - hyperliquid_dart library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li><a href="../hyperliquid_dart/">hyperliquid_dart.dart</a></li>
+    <li class="self-crumb">OrderWire class</li>
+  </ol>
+  <div class="self-name">OrderWire</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="hyperliquid_dart&#47;hyperliquid_dart-library-sidebar.html"
+    data-below-sidebar="hyperliquid_dart&#47;OrderWire-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">OrderWire</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Wire format for a single order (field order is critical for msgpack).</p>
+<p>Fields MUST be in order: a, b, p, s, r, t
+This matches the Python SDK's <code>order_request_to_order_wire</code>.</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="OrderWire.new" class="callable">
+          <span class="name"><a href="../hyperliquid_dart/OrderWire/OrderWire.html">OrderWire</a></span><span class="signature">({<span class="parameter" id="-param-asset"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">asset</span>, </span><span class="parameter" id="-param-isBuy"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBuy</span>, </span><span class="parameter" id="-param-limitPx"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitPx</span>, </span><span class="parameter" id="-param-sz"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sz</span>, </span><span class="parameter" id="-param-reduceOnly"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reduceOnly</span>, </span><span class="parameter" id="-param-orderType"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">orderType</span></span>})</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">const</div>
+        </dd>
+        <dt id="OrderWire.limit" class="callable">
+          <span class="name"><a href="../hyperliquid_dart/OrderWire/OrderWire.limit.html">OrderWire.limit</a></span><span class="signature">({<span class="parameter" id="limit-param-asset"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">asset</span>, </span><span class="parameter" id="limit-param-isBuy"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBuy</span>, </span><span class="parameter" id="limit-param-limitPx"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitPx</span>, </span><span class="parameter" id="limit-param-sz"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sz</span>, </span><span class="parameter" id="limit-param-reduceOnly"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reduceOnly</span> = <span class="default-value">false</span>, </span><span class="parameter" id="limit-param-tif"><span class="type-annotation"><a href="../hyperliquid_dart/TimeInForce.html">TimeInForce</a></span> <span class="parameter-name">tif</span> = <span class="default-value">TimeInForce.gtc</span></span>})</span>
+        </dt>
+        <dd>
+          Create a limit order wire.
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+        <dt id="OrderWire.market" class="callable">
+          <span class="name"><a href="../hyperliquid_dart/OrderWire/OrderWire.market.html">OrderWire.market</a></span><span class="signature">({<span class="parameter" id="market-param-asset"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">asset</span>, </span><span class="parameter" id="market-param-isBuy"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBuy</span>, </span><span class="parameter" id="market-param-limitPx"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitPx</span>, </span><span class="parameter" id="market-param-sz"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sz</span>, </span><span class="parameter" id="market-param-reduceOnly"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reduceOnly</span> = <span class="default-value">false</span></span>})</span>
+        </dt>
+        <dd>
+          Create a market order wire.
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+        <dt id="OrderWire.trigger" class="callable">
+          <span class="name"><a href="../hyperliquid_dart/OrderWire/OrderWire.trigger.html">OrderWire.trigger</a></span><span class="signature">({<span class="parameter" id="trigger-param-asset"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">asset</span>, </span><span class="parameter" id="trigger-param-isBuy"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBuy</span>, </span><span class="parameter" id="trigger-param-limitPx"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">limitPx</span>, </span><span class="parameter" id="trigger-param-sz"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sz</span>, </span><span class="parameter" id="trigger-param-triggerPx"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">triggerPx</span>, </span><span class="parameter" id="trigger-param-tpsl"><span>required</span> <span class="type-annotation"><a href="../hyperliquid_dart/TpslType.html">TpslType</a></span> <span class="parameter-name">tpsl</span>, </span><span class="parameter" id="trigger-param-isMarket"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isMarket</span> = <span class="default-value">true</span>, </span><span class="parameter" id="trigger-param-reduceOnly"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reduceOnly</span> = <span class="default-value">true</span></span>})</span>
+        </dt>
+        <dd>
+          Create a trigger (TP/SL) order wire.
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="asset" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/asset.html">asset</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  Asset ID.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isBuy" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/isBuy.html">isBuy</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Buy (true) or sell (false).
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="limitPx" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/limitPx.html">limitPx</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Limit price as string.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="orderType" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/orderType.html">orderType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Order type (limit, market, or trigger).
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="reduceOnly" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/reduceOnly.html">reduceOnly</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Reduce only.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="sz" class="property">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/sz.html">sz</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Size as string.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toWire" class="callable">
+  <span class="name"><a href="../hyperliquid_dart/OrderWire/toWire.html">toWire</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Serialize to the wire format with correct field ordering.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">hyperliquid_dart</a></li>
+    <li><a href="../hyperliquid_dart/">hyperliquid_dart</a></li>
+    <li class="self-crumb">OrderWire class</li>
+</ol>
+
+    <h5>hyperliquid_dart library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

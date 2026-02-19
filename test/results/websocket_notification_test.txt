@@ -1,0 +1,13 @@
+00:00 +0: loading test/websocket/notification_test.dart
+00:00 +0: Notification subscription integration (setUpAll)
+00:01 +0: Notification subscription integration subscribes to notifications channel
+Received 0 notifications in 5 seconds
+✓ No notifications received (account may be inactive)
+00:06 +1: Notification subscription integration notification subscription handles connection
+✓ Notification subscription lifecycle complete
+00:08 +2: Notification subscription integration multiple notification subscriptions
+Handler 1: 0 notifications
+Handler 2: 0 notifications
+✓ Multiple handlers managed correctly
+00:11 +3: Notification subscription integration (tearDownAll)
+00:11 +3: All tests passed!

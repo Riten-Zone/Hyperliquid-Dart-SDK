@@ -1,0 +1,43 @@
+00:00 +0: loading test/info/perp_dexs_test.dart
+00:00 +0: HIP-3 PerpDexs integration (setUpAll)
+00:00 +0: HIP-3 PerpDexs integration fetches all HIP-3 DEXs
+✓ Found 7 HIP-3 DEXs
+
+  1. xyz (XYZ)
+     Deployer: 0x88806a71d74ad0a510b350545c9ae490912f0888
+     Assets: 45
+
+  2. flx (Felix Exchange)
+     Deployer: 0x2fab552502a6d45920d5741a2f3ebf4c35536352
+     Assets: 11
+
+  3. vntl (Ventuals)
+     Deployer: 0x8888888192a4a0593c13532ba48449fc24c3beda
+     Assets: 13
+
+  4. hyna (HyENA)
+     Deployer: 0x53e655101ea361537124ef814ad4e654b54d0637
+     Assets: 21
+
+  5. km (Markets by Kinetiq)
+     Deployer: 0x71f0019cc7fa79e4f42587fb7b9a817d8d2429ec
+     Assets: 13
+
+  6. abcd (ABCDEx)
+     Deployer: 0x372c7f69d0ecc14f73f89bd8a7dfb41bdf29857c
+     Assets: 0
+
+  7. cash (dreamcash)
+     Deployer: 0xffa8198c62adb1e811629bd54c9b646d726deef7
+     Assets: 11
+00:00 +1: HIP-3 PerpDexs integration fetches metadata for specific HIP-3 DEX
+Testing with DEX: xyz
+✓ DEX xyz has 45 assets
+  Sample: xyz:XYZ100 (4 decimals, 25x max leverage)
+00:01 +2: HIP-3 PerpDexs integration fetches metadata and contexts for HIP-3 DEX
+✓ DEX xyz: 45 assets with contexts
+  Sample: xyz:XYZ100 - Mark: 25251.0, Funding: 0.00000625
+00:02 +3: HIP-3 PerpDexs integration regular meta() still works without dex parameter
+✓ Regular perpetuals: 229 assets
+00:02 +4: HIP-3 PerpDexs integration (tearDownAll)
+00:02 +4: All tests passed!

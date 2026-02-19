@@ -1,0 +1,20 @@
+00:00 +0: loading test/info/funding_history_test.dart
+00:00 +0: fundingHistory integration (setUpAll)
+00:00 +0: fundingHistory integration fetches funding history for BTC
+Fetched 24 funding records for BTC in last 24h
+First entry:
+  Time: 2026-02-10 18:00:00.065
+  Funding rate: 0.0000125
+  Premium: -0.0003146895
+00:00 +1: fundingHistory integration fetches funding history for ETH
+Fetched 168 funding records for ETH in last 7 days
+Last entry:
+  Time: 2026-02-11 17:00:00.077
+  Funding rate: -0.0000002481
+  Premium: -0.0005019847
+00:01 +2: fundingHistory integration handles empty time range
+Funding records for SOL in last 1h: 1
+00:01 +3: fundingHistory integration funding history entries have valid timestamps
+✓ All 72 entries have valid, sorted timestamps
+00:02 +4: fundingHistory integration (tearDownAll)
+00:02 +4: All tests passed!

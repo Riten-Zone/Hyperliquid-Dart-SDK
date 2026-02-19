@@ -1,0 +1,19 @@
+00:00 +0: loading test/info/spot_meta_test.dart
+00:00 +0: Spot market integration (setUpAll)
+00:00 +0: Spot market integration fetches spot metadata
+✓ Spot tokens: 443
+  Sample: USDC (0x6d1e7cde53ba9467b783cb7c530ce054)
+00:01 +1: Spot market integration fetches spot metadata and asset contexts
+✓ Asset contexts: 290
+  Sample: PURR/USDC @ $0.071077
+  Volume (24h): 843171.926799
+00:02 +2: Spot market integration fetches token details
+✓ Token: USDC
+  Supply: 3859504826.2940478325/1000000000000.0
+  Mark Price: $1.0
+  Decimals: sz=8, wei=0
+00:03 +3: Spot market integration spot metadata and asset contexts have valid structure
+Tokens: 443, Contexts: 290
+✓ Spot metadata and asset contexts have valid structure
+00:04 +4: Spot market integration (tearDownAll)
+00:04 +4: All tests passed!

@@ -1,0 +1,16 @@
+Test: twap_states_test
+Status: PASSED
+Category: websocket
+
+Key Output:
+00:00 +0: TWAP states subscription integration (setUpAll)
+00:01 +0: TWAP states subscription integration subscribes to TWAP states channel
+TWAP states update #1: 0 states
+TWAP states update #2: 0 states
+Received 2 TWAP state updates in 5 seconds
+✓ No active TWAPs (subscription working correctly)
+00:06 +1: TWAP states subscription integration TWAP states update when placing and canceling
+Placed TWAP 1594299, waiting for state update...
+⚠ TWAP state not received (may be delayed)
+✓ TWAP lifecycle test complete
+00:13 +2: TWAP states subscription integration (tearDownAll)

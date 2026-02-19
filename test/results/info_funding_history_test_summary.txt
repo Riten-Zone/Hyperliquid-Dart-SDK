@@ -1,0 +1,9 @@
+Test: funding_history_test
+Status: PASSED
+Category: info
+
+Key Output:
+  Funding rate: 0.0000125
+  Funding rate: -0.0000002481
+Funding records for SOL in last 1h: 1
+✓ All 72 entries have valid, sorted timestamps

@@ -1,0 +1,25 @@
+00:00 +0: loading test/info/user_fees_test.dart
+00:00 +0: UserFees integration (setUpAll)
+00:00 +0: UserFees integration fetches user fee structure
+✓ Fee structure retrieved
+  Perp taker fee: 0.00045
+  Perp maker rebate: 0.00015
+  Spot taker fee: 0.0007
+  Spot maker rebate: 0.0004
+  Referral discount: 0.0
+  Staking discount: 0.0 (0.0 bps of max supply)
+
+  Recent trading volume (last 15 days):
+    2026-01-29: Taker=0.0, Maker=0.0
+    2026-01-30: Taker=0.0, Maker=0.0
+    2026-01-31: Taker=0.0, Maker=0.0
+    2026-02-01: Taker=0.0, Maker=0.0
+    2026-02-02: Taker=0.0, Maker=0.0
+00:00 +1: UserFees integration validates fee structure types
+✓ All fee structure types validated
+00:00 +2: UserFees integration handles zero-volume user gracefully
+✓ Zero-volume user handled correctly
+  Default taker fee: 0.00045
+  Default maker rebate: 0.00015
+00:01 +3: UserFees integration (tearDownAll)
+00:01 +3: All tests passed!

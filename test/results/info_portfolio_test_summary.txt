@@ -1,0 +1,6 @@
+Test: portfolio_test
+Status: PASSED
+Category: info
+
+Key Output:
+Portfolio periods: [day, week, month, allTime, perpDay, perpWeek, perpMonth, perpAllTime]

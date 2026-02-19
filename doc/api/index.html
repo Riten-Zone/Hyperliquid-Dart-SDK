@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="hyperliquid_dart API docs, for the Dart programming language.">
+  <title>hyperliquid_dart - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">hyperliquid_dart package</li>
+  </ol>
+  <div class="self-name">hyperliquid_dart</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="hyperliquid_dart">hyperliquid_dart</h1>
+<p>A Dart SDK for the <a href="https://hyperliquid.xyz">Hyperliquid</a> decentralized exchange (DEX). Trade perpetual futures with REST API, WebSocket streams, and EIP-712 signing.</p>
+<p><a href="https://dart.dev/"><img src="https://img.shields.io/badge/dart-%3E%3D3.10.0-blue.svg" alt="Dart"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>REST API</strong> — 52 methods across InfoClient (31) and ExchangeClient (21) for market data, account info, trading, and vault operations</li>
+<li><strong>Spot &amp; Perpetual Trading</strong> — Full support for both spot markets and perpetual futures</li>
+<li><strong>Vault Operations</strong> — Query vaults, check positions, deposit/withdraw funds</li>
+<li><strong>WebSocket</strong> — 15 real-time subscriptions for orderbook, trades, fills, funding, TWAP, and ledger updates</li>
+<li><strong>EIP-712 Signing</strong> — Full signing support with wallet-agnostic interface</li>
+<li><strong>Wallet Adapters</strong> — Built-in support for raw private keys; bring your own wallet (Privy, Web3Auth, etc.)</li>
+<li><strong>Type-Safe</strong> — Comprehensive Dart models for all API responses</li>
+<li><strong>HIP-3 DEX Support</strong> — Query and trade on builder-deployed perpetual DEXs</li>
+<li><strong>Minimal Dependencies</strong> — Only 4 runtime dependencies, no bloat</li>
+<li><strong>Production-Ready</strong> — 21 integration tests passing (95%), verified against live mainnet</li>
+<li><strong>TypeScript SDK Parity</strong> — 56% InfoClient, 42% ExchangeClient, 79% WebSocketClient coverage (actively expanding)</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Add to your <code>pubspec.yaml</code>:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  hyperliquid_dart:
+    git:
+      url: https://github.com/Riten-Zone/Hyperliquid-Dart-SDK.git
+      ref: main
+</code></pre>
+<p>Or use a local path during development:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  hyperliquid_dart:
+    path: ../Hyperliquid-Dart-SDK
+</code></pre>
+<p>Then run:</p>
+<pre class="language-bash"><code class="language-bash">dart pub get  # or flutter pub get
+</code></pre>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="read-only-api-no-wallet-needed">Read-Only API (No Wallet Needed)</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:hyperliquid_dart/hyperliquid_dart.dart';
+
+void main() async {
+  // Create an InfoClient for read-only queries
+  final info = InfoClient();
+
+  // Fetch current prices
+  final mids = await info.allMids();
+  print('BTC: \$${mids['BTC']}');
+
+  // Fetch candlestick data
+  final candles = await info.candleSnapshot(
+    coin: 'BTC',
+    interval: '1h',
+    startTime: DateTime.now().subtract(Duration(days: 1)).millisecondsSinceEpoch,
+    endTime: DateTime.now().millisecondsSinceEpoch,
+  );
+  print('Fetched ${candles.length} candles');
+
+  // Fetch orderbook
+  final book = await info.l2Book('BTC');
+  print('Best bid: ${book.bids.first.price}');
+  print('Best ask: ${book.asks.first.price}');
+
+  info.close();
+}
+</code></pre>
+<h3 id="trading-requires-wallet">Trading (Requires Wallet)</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:hyperliquid_dart/hyperliquid_dart.dart';
+
+void main() async {
+  // Create a wallet adapter (this example uses raw private key)
+  final wallet = PrivateKeyWalletAdapter('0xYOUR_PRIVATE_KEY');
+
+  // Create an ExchangeClient for trading
+  final exchange = ExchangeClient(wallet: wallet);
+
+  // Set leverage
+  await exchange.updateLeverage(
+    asset: 0,  // BTC
+    leverage: 10,
+    isCross: true,
+  );
+
+  // Place a limit order
+  final result = await exchange.placeOrder(
+    orders: [
+      OrderWire.limit(
+        asset: 0,  // BTC
+        isBuy: true,
+        limitPx: '50000',  // $50,000
+        sz: '0.001',       // 0.001 BTC
+        tif: TimeInForce.gtc,
+      ),
+    ],
+  );
+  print('Order placed: ${result.status}');
+
+  exchange.close();
+}
+</code></pre>
+<h3 id="real-time-websocket-streams">Real-Time WebSocket Streams</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:hyperliquid_dart/hyperliquid_dart.dart';
+
+void main() async {
+  final ws = WebSocketClient();
+  await ws.connect();
+
+  // Subscribe to live prices
+  final midsHandle = ws.subscribeAllMids((mids) {
+    print('BTC: \$${mids['BTC']}');
+  });
+
+  // Subscribe to orderbook updates
+  final bookHandle = ws.subscribeL2Book('BTC', (book) {
+    print('Bid: ${book.bids.first.price}, Ask: ${book.asks.first.price}');
+  });
+
+  // Keep running for 10 seconds
+  await Future.delayed(Duration(seconds: 10));
+
+  // Cleanup
+  await midsHandle.cancel();
+  await bookHandle.cancel();
+  await ws.dispose();
+}
+</code></pre>
+<h2 id="wallet-integration">Wallet Integration</h2>
+<p>The SDK uses a <code>WalletAdapter</code> interface, allowing you to integrate any wallet provider.</p>
+<h3 id="using-raw-private-key-built-in">Using Raw Private Key (Built-in)</h3>
+<pre class="language-dart"><code class="language-dart">final wallet = PrivateKeyWalletAdapter('0xYOUR_PRIVATE_KEY');
+</code></pre>
+<p><strong>⚠️ Security:</strong> Never hardcode private keys in production. Use environment variables or secure storage.</p>
+<h3 id="custom-wallet-integration-eg-privy">Custom Wallet Integration (e.g., Privy)</h3>
+<pre class="language-dart"><code class="language-dart">class PrivyWalletAdapter implements WalletAdapter {
+  final PrivyClient _privy;
+
+  PrivyWalletAdapter(this._privy);
+
+  @override
+  Future&lt;String&gt; getAddress() async {
+    return await _privy.getAddress();
+  }
+
+  @override
+  Future&lt;String&gt; signTypedData(Map&lt;String, dynamic&gt; typedData) async {
+    return await _privy.eth_signTypedData_v4(typedData);
+  }
+}
+
+// Use it
+final wallet = PrivyWalletAdapter(myPrivyClient);
+final exchange = ExchangeClient(wallet: wallet);
+</code></pre>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="infoclient-read-only---31-methods-available">InfoClient (Read-Only) - 31 Methods Available</h3>
+<p><strong>Coverage: 56% (31/55)</strong> compared to TypeScript SDK</p>
+<p><strong>Perpetual Futures Market Data</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allMids()</code></td>
+<td>Get current mid prices for all perpetual assets</td>
+</tr>
+<tr>
+<td><code>candleSnapshot(coin, interval, startTime, endTime)</code></td>
+<td>Get OHLCV candles for a coin</td>
+</tr>
+<tr>
+<td><code>candleSnapshotPaginated(coin, interval, startTime, endTime)</code></td>
+<td>Auto-paginated candle queries for large time ranges</td>
+</tr>
+<tr>
+<td><code>l2Book(coin)</code></td>
+<td>Get orderbook snapshot</td>
+</tr>
+<tr>
+<td><code>metaAndAssetCtxs(dex?)</code></td>
+<td>Get perpetual futures metadata and contexts (supports HIP-3 DEXs)</td>
+</tr>
+<tr>
+<td><code>meta(dex?)</code></td>
+<td>Get perpetual futures metadata only (supports HIP-3 DEXs)</td>
+</tr>
+<tr>
+<td><code>universeNames()</code></td>
+<td>Get asset universe names (convenience method)</td>
+</tr>
+<tr>
+<td><code>recentTrades(coin)</code></td>
+<td>Get recent trades for a coin</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Spot Market Data</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spotMeta()</code></td>
+<td>Get all spot tokens metadata (tokens, universes)</td>
+</tr>
+<tr>
+<td><code>spotMetaAndAssetCtxs()</code></td>
+<td>Get spot metadata + market data (prices, volumes)</td>
+</tr>
+<tr>
+<td><code>tokenDetails(tokenId)</code></td>
+<td>Get detailed token information by token ID</td>
+</tr>
+<tr>
+<td><code>spotClearinghouseState(address)</code></td>
+<td>Get user's spot token balances</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Account &amp; Order Data</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clearinghouseState(address)</code></td>
+<td>Get perpetual account state (balance, positions)</td>
+</tr>
+<tr>
+<td><code>openOrders(address)</code></td>
+<td>Get user's open orders</td>
+</tr>
+<tr>
+<td><code>frontendOpenOrders(address)</code></td>
+<td>Get user's open orders including trigger orders</td>
+</tr>
+<tr>
+<td><code>historicalOrders(address)</code></td>
+<td>Get up to 2000 most recent orders</td>
+</tr>
+<tr>
+<td><code>userFills(address)</code></td>
+<td>Get user's trade fills history</td>
+</tr>
+<tr>
+<td><code>userFillsByTime(user, startTime, endTime?)</code></td>
+<td>Get user's fills filtered by time range</td>
+</tr>
+<tr>
+<td><code>userFunding(user, startTime, endTime?)</code></td>
+<td>Get user's funding payments</td>
+</tr>
+<tr>
+<td><code>fundingHistory(coin, startTime, endTime?)</code></td>
+<td>Get historical funding rates for a coin</td>
+</tr>
+<tr>
+<td><code>orderStatus(user, oid)</code></td>
+<td>Get order status by order ID</td>
+</tr>
+<tr>
+<td><code>portfolio(user)</code></td>
+<td>Get portfolio with historical account value and PnL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sub-Accounts &amp; HIP-3 DEXs</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subAccounts(user)</code></td>
+<td>Get user's sub-accounts with balances and positions</td>
+</tr>
+<tr>
+<td><code>perpDexs()</code></td>
+<td>Get all HIP-3 builder-deployed perpetual DEXs</td>
+</tr>
+<tr>
+<td><code>maxBuilderFee(user, builder)</code></td>
+<td>Get max approved builder fee</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Vault Operations</strong> 🆕</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vaultDetails(vaultAddress, user?)</code></td>
+<td>Get detailed vault information including performance, followers, and portfolio history</td>
+</tr>
+<tr>
+<td><code>vaultSummaries()</code></td>
+<td>Get summaries for all vaults (may return empty - known API issue)</td>
+</tr>
+<tr>
+<td><code>leadingVaults(user)</code></td>
+<td>Get all vaults managed by a specific vault leader</td>
+</tr>
+<tr>
+<td><code>userVaultEquities(user)</code></td>
+<td>Get user's vault deposits and equity across all vaults</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://pub.dev/documentation/hyperliquid_dart/latest/">Full API docs →</a></p>
+<h3 id="exchangeclient-trading---21-methods-available">ExchangeClient (Trading) - 21 Methods Available</h3>
+<p><strong>Coverage: 42% (21/50)</strong> compared to TypeScript SDK</p>
+<p><strong>Order Management</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>placeOrder(orders, grouping, builder, vaultAddress?)</code></td>
+<td>Place limit/market/trigger orders</td>
+</tr>
+<tr>
+<td><code>cancelOrders(cancels, vaultAddress?)</code></td>
+<td>Cancel orders by order ID</td>
+</tr>
+<tr>
+<td><code>cancelOrdersByCloid(asset, cloids, vaultAddress?)</code></td>
+<td>Cancel orders by client order ID</td>
+</tr>
+<tr>
+<td><code>modify(oid, order, vaultAddress?)</code></td>
+<td>Modify an existing order (price, size)</td>
+</tr>
+<tr>
+<td><code>batchModify(modifies, vaultAddress?)</code></td>
+<td>Modify multiple orders in a single atomic request</td>
+</tr>
+<tr>
+<td><code>scheduleCancel(time)</code></td>
+<td>Schedule all orders to cancel at a specific time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TWAP Orders</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>twapOrder(twap, vaultAddress?)</code></td>
+<td>Place TWAP (time-weighted average price) order</td>
+</tr>
+<tr>
+<td><code>twapCancel(cancel, vaultAddress?)</code></td>
+<td>Cancel an active TWAP order</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Account Management</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>updateLeverage(asset, leverage, isCross, vaultAddress?)</code></td>
+<td>Set leverage for a perpetual asset</td>
+</tr>
+<tr>
+<td><code>updateIsolatedMargin(asset, isBuy, ntli, vaultAddress?)</code></td>
+<td>Add/remove isolated margin</td>
+</tr>
+<tr>
+<td><code>usdTransfer(destination, amount)</code></td>
+<td>Transfer USDC between accounts/sub-accounts</td>
+</tr>
+<tr>
+<td><code>usdClassTransfer(amount, toPerp)</code></td>
+<td>Transfer USDC between spot and perp accounts</td>
+</tr>
+<tr>
+<td><code>withdraw(destination, amount)</code></td>
+<td>Withdraw USDC to another address</td>
+</tr>
+<tr>
+<td><code>approveBuilderFee(builder, maxFeeRate)</code></td>
+<td>Approve a builder fee for HIP-3 DEXs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Spot Token Operations</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spotUser(action)</code></td>
+<td>Toggle spot dusting settings</td>
+</tr>
+<tr>
+<td><code>spotSend(destination, token, amount)</code></td>
+<td>Send spot tokens to another address</td>
+</tr>
+<tr>
+<td><code>sendAsset(destination, token, amount, dex?, subAccount?)</code></td>
+<td>Transfer assets between DEXs/addresses/sub-accounts</td>
+</tr>
+<tr>
+<td><code>subAccountTransfer(amount, subAccount, isDeposit)</code></td>
+<td>Transfer USDC to/from sub-accounts (perp DEX)</td>
+</tr>
+<tr>
+<td><code>subAccountSpotTransfer(token, amount, subAccount, isDeposit)</code></td>
+<td>Transfer spot tokens to/from sub-accounts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Vault Operations</strong> 🆕</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vaultTransfer(vaultAddress, isDeposit, usd)</code></td>
+<td>Deposit/withdraw USDC to/from vaults ($5 minimum, 24h lockup)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="websocketclient-real-time---15-subscriptions-available">WebSocketClient (Real-Time) - 15 Subscriptions Available</h3>
+<p><strong>Market Data Streams</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscribeAllMids(callback)</code></td>
+<td>Live mid prices for all perpetual assets</td>
+</tr>
+<tr>
+<td><code>subscribeL2Book(coin, callback)</code></td>
+<td>Live orderbook updates for a coin</td>
+</tr>
+<tr>
+<td><code>subscribeCandle(coin, interval, callback)</code></td>
+<td>Live OHLCV candle updates</td>
+</tr>
+<tr>
+<td><code>subscribeTrades(coin, callback)</code></td>
+<td>Live trades stream for a coin</td>
+</tr>
+<tr>
+<td><code>subscribeBbo(coin, callback)</code></td>
+<td>Best bid/offer updates</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Account Streams</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscribeUserFills(address, callback)</code></td>
+<td>Live trade fills for user</td>
+</tr>
+<tr>
+<td><code>subscribeOrderUpdates(address, callback)</code></td>
+<td>Order status updates for user</td>
+</tr>
+<tr>
+<td><code>subscribeUserFundings(address, callback)</code></td>
+<td>Live funding payments for user</td>
+</tr>
+<tr>
+<td><code>subscribeUserEvents(address, callback)</code></td>
+<td>User event stream (clearinghouse state changes, etc.)</td>
+</tr>
+<tr>
+<td><code>subscribeNotification(address, callback)</code></td>
+<td>Account notifications</td>
+</tr>
+<tr>
+<td><code>subscribeWebData3(address, callback)</code></td>
+<td>Aggregated account data stream</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TWAP Streams</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscribeTwapStates(address, callback)</code></td>
+<td>Active TWAP orders status</td>
+</tr>
+<tr>
+<td><code>subscribeUserTwapHistory(address, callback)</code></td>
+<td>TWAP order history events</td>
+</tr>
+<tr>
+<td><code>subscribeUserTwapSliceFills(address, callback)</code></td>
+<td>Individual TWAP slice fill notifications</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscribeRaw(key, message, callback)</code></td>
+<td>Generic raw subscription for any type</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Planned Future Subscriptions</strong></p>
+<ul>
+<li>Spot market real-time data streams</li>
+<li>Vault performance updates</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>See the <a href="example/"><code>example/</code></a> directory for more examples:</p>
+<ul>
+<li><a href="example/hyperliquid_dart_example.dart"><code>hyperliquid_dart_example.dart</code></a> — Comprehensive demo</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<pre class="language-bash"><code class="language-bash"># Unit tests (no wallet needed)
+dart test --exclude-tags integration
+
+# Integration tests (requires HYPERLIQUID_PRIVATE_KEY env var)
+HYPERLIQUID_PRIVATE_KEY=0x... dart test --tags integration
+</code></pre>
+<h2 id="architecture">Architecture</h2>
+<ul>
+<li><strong>Minimal Dependencies</strong>: <code>http</code>, <code>web_socket_channel</code>, <code>pointycastle</code>, <code>msgpack_dart</code></li>
+<li><strong>Wallet-Agnostic</strong>: Abstract <code>WalletAdapter</code> interface</li>
+<li><strong>Type-Safe</strong>: Comprehensive models for all API responses</li>
+<li><strong>Memory-Efficient</strong>: Designed for long-running applications</li>
+</ul>
+<h2 id="roadmap">Roadmap</h2>
+<p><strong>Completed</strong></p>
+<ul>
+<li><code>x</code> REST API — InfoClient (31 methods) + ExchangeClient (21 methods)</li>
+<li><code>x</code> WebSocket subscriptions (15 real-time streams)</li>
+<li><code>x</code> EIP-712 signing with wallet-agnostic interface</li>
+<li><code>x</code> PrivateKeyWalletAdapter for raw private keys</li>
+<li><code>x</code> Perpetual futures trading (orders, leverage, positions)</li>
+<li><code>x</code> TWAP orders (place, cancel, monitor via WebSocket)</li>
+<li><code>x</code> Spot market metadata and price queries</li>
+<li><code>x</code> <strong>Spot token trading</strong> (buy/sell, send, dust settings, sub-account transfers)</li>
+<li><code>x</code> HIP-3 DEX support (query DEXs, metadata, trade on builder-deployed perps)</li>
+<li><code>x</code> Sub-account queries and USDC transfers</li>
+<li><code>x</code> <strong>Vault operations</strong> (query vaults, deposit/withdraw, check positions)</li>
+<li><code>x</code> Order modification (single and batch)</li>
+<li><code>x</code> Builder fee approval</li>
+<li><code>x</code> Paginated candle queries for large time ranges</li>
+<li><code>x</code> Portfolio and funding history endpoints</li>
+<li><code>x</code> <strong>Published to pub.dev</strong> 🎉</li>
+</ul>
+<p><strong>Future</strong></p>
+<ul>
+<li><code> </code> Referral system integration</li>
+<li><code> </code> Comprehensive API documentation expansion</li>
+<li><code> </code> Additional WebSocket streams (spot markets, vault updates)</li>
+</ul>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions welcome! Please open an issue or PR on <a href="https://github.com/Riten-Zone/Hyperliquid-Dart-SDK">GitHub</a>.</p>
+<h2 id="license">License</h2>
+<p>MIT License - see <a href="LICENSE">LICENSE</a> for details.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This SDK is provided as-is. Trading crypto involves risk. The authors are not responsible for any losses incurred.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://hyperliquid.gitbook.io/hyperliquid-docs">Hyperliquid Documentation</a></li>
+<li><a href="https://app.hyperliquid.xyz/">Hyperliquid DEX</a></li>
+<li><a href="https://github.com/Riten-Zone/Hyperliquid-Dart-SDK">GitHub Repository</a></li>
+</ul>
+<hr>
+<p>Built with ❤️ for the Hyperliquid community</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="hyperliquid_dart">
+  <span class="name"><a href="hyperliquid_dart/">hyperliquid_dart</a></span> 
+
+</dt>
+<dd>Dart SDK for the Hyperliquid DEX.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">hyperliquid_dart package</li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">hyperliquid_dart</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="hyperliquid_dart/">hyperliquid_dart</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

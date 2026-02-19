@@ -1,0 +1,10 @@
+00:00 +0: loading test/exchange/modify_test.dart
+00:00 +0: modify integration (setUpAll)
+00:00 +0: modify integration modify single order
+Placing initial order at $33250
+Warning: No resting order in response. Status: {error: Insufficient margin to place order. asset=0}
+00:01 +1: modify integration batchModify multiple orders
+Placing two orders at $33250 and $32585
+Warning: Orders did not rest. Status1: {error: Insufficient margin to place order. asset=0}, Status2: {error: Insufficient margin to place order. asset=0}
+00:03 +2: modify integration (tearDownAll)
+00:03 +2: All tests passed!

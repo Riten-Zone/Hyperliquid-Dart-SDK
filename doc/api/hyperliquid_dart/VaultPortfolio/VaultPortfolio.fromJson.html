@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the VaultPortfolio.fromJson constructor from Class VaultPortfolio from the hyperliquid_dart library, for the Dart programming language.">
+  <title>VaultPortfolio.fromJson constructor - VaultPortfolio - hyperliquid_dart library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/">hyperliquid_dart.dart</a></li>
+    <li><a href="../../hyperliquid_dart/VaultPortfolio-class.html">VaultPortfolio</a></li>
+    <li class="self-crumb">VaultPortfolio.fromJson factory constructor</li>
+  </ol>
+  <div class="self-name">VaultPortfolio.fromJson</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="hyperliquid_dart&#47;VaultPortfolio-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">VaultPortfolio.fromJson</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">VaultPortfolio.fromJson</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="fromJson-param-portfolioArray"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span> <span class="parameter-name">portfolioArray</span></span></li>
+</ol>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Parse portfolio from API response which comes as an array of tuples.
+Format: [<code>"day", {...}</code>, <code>"week", {...}</code>, <code>"month", {...}</code>, ...]</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">factory VaultPortfolio.fromJson(List&lt;dynamic&gt; portfolioArray) {
+  final emptyPeriod = PortfolioPeriod(
+    accountValueHistory: [],
+    pnlHistory: [],
+    vlm: &#39;0&#39;,
+  );
+
+  &#47;&#47; Convert array of tuples to map for easier access
+  final Map&lt;String, PortfolioPeriod&gt; periods = {};
+  for (final item in portfolioArray) {
+    if (item is List &amp;&amp; item.length == 2) {
+      final key = item[0] as String;
+      final value = item[1] as Map&lt;String, dynamic&gt;;
+      periods[key] = PortfolioPeriod.fromJson(value);
+    }
+  }
+
+  return VaultPortfolio(
+    day: periods[&#39;day&#39;] ?? emptyPeriod,
+    week: periods[&#39;week&#39;] ?? emptyPeriod,
+    month: periods[&#39;month&#39;] ?? emptyPeriod,
+    allTime: periods[&#39;allTime&#39;] ?? emptyPeriod,
+    perpDay: periods[&#39;perpDay&#39;] ?? emptyPeriod,
+    perpWeek: periods[&#39;perpWeek&#39;] ?? emptyPeriod,
+    perpMonth: periods[&#39;perpMonth&#39;] ?? emptyPeriod,
+    perpAllTime: periods[&#39;perpAllTime&#39;] ?? emptyPeriod,
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/">hyperliquid_dart</a></li>
+    <li><a href="../../hyperliquid_dart/VaultPortfolio-class.html">VaultPortfolio</a></li>
+    <li class="self-crumb">VaultPortfolio.fromJson factory constructor</li>
+</ol>
+
+    <h5>VaultPortfolio class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    hyperliquid_dart
+      0.16.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

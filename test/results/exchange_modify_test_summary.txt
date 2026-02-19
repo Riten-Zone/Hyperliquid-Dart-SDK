@@ -1,0 +1,6 @@
+Test: modify_test
+Status: PASSED
+Category: exchange
+
+Key Output:
+Warning: Orders did not rest. Status1: {error: Insufficient margin to place order. asset=0}, Status2: {error: Insufficient margin to place order. asset=0}
