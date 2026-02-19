@@ -1,8 +1,8 @@
 name: hyperliquid_dart
 description: A Dart SDK for the Hyperliquid DEX — REST API, WebSocket subscriptions, EIP-712 signing, and order management.
-version: 0.16.1
-repository: https://github.com/riten/Hyperliquid-Dart-SDK
-issue_tracker: https://github.com/riten/Hyperliquid-Dart-SDK/issues
+version: 0.16.2
+repository: https://github.com/Riten-Zone/Hyperliquid-Dart-SDK
+issue_tracker: https://github.com/Riten-Zone/Hyperliquid-Dart-SDK/issues
 topics:
   - hyperliquid
   - defi
@@ -14,9 +14,9 @@ environment:
   sdk: ^3.10.0
 
 dependencies:
-  http: ^1.3.0
-  web_socket_channel: ^3.0.2
-  pointycastle: ^3.9.1
+  http: ^1.6.0
+  web_socket_channel: ^3.0.3
+  pointycastle: ^4.0.0
   msgpack_dart: ^1.0.1
   convert: ^3.1.2
 

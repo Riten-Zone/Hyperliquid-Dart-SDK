@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.2] - 2026-02-19
+
+### Fixed
+- Updated repository and issue tracker URLs to `https://github.com/Riten-Zone/Hyperliquid-Dart-SDK`
+- Updated dependencies to latest versions:
+  - `http`: `^1.3.0` → `^1.6.0`
+  - `web_socket_channel`: `^3.0.2` → `^3.0.3`
+  - `pointycastle`: `^3.9.1` → `^4.0.0`
+
 ## [0.16.1] - 2026-02-15
 
 ### Changed - Documentation Enhancement
