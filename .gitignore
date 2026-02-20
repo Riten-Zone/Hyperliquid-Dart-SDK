@@ -1,0 +1,27 @@
+# https://dart.dev/guides/libraries/private-files
+# Created by `dart pub`
+.dart_tool/
+
+# Avoid committing pubspec.lock for library packages; see
+# https://dart.dev/guides/libraries/private-files#pubspeclock.
+pubspec.lock
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+credentials/
+
+# Plan folders
+.plan/
+plan/
+
+# Test Results
+test/results
+results/*.txt
+results/*.json
+# Test script results
+test/results/api_responses/
