@@ -78,7 +78,7 @@ Map<String, dynamic> buildSubscriptionMessage(
       assert(coin != null, 'l2Book requires coin');
       final sub = <String, dynamic>{'type': 'l2Book', 'coin': coin!};
       if (nSigFigs != null) sub['nSigFigs'] = nSigFigs;
-      if (mantissa != null) sub['mantissa'] = mantissa;
+      if (mantissa != null) sub['mantissa'] = int.tryParse(mantissa) ?? mantissa;
       return {'method': 'subscribe', 'subscription': sub};
 
     case SubscriptionType.candle:
