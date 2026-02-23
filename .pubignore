@@ -1,0 +1,4 @@
+# Internal planning and dev files — not needed by consumers
+plan/
+test/results/
+pubspec.lock
