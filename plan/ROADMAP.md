@@ -1,307 +1,271 @@
 # Hyperliquid Dart SDK - Roadmap
 
-## SDK Expansion Phases (In Progress)
-
-### ✅ Completed Phases (1-16)
-
-**Phase 1-3: InfoClient Methods** ✅ Complete
-- orderStatus() - Look up order by ID
-- portfolio() - Account value and PnL history
-- fundingHistory() - Historical funding rates
-
-**Phase 4-5: ExchangeClient Methods** ✅ Complete
-- modify() / batchModify() - Order modification
-- scheduleCancel() - Dead man's switch
-
-**Phase 6-8: WebSocket Subscriptions** ✅ Complete
-- subscribeBbo() - Best bid/offer
-- subscribeWebData3() - Aggregate account data
-- subscribeNotification() - System notifications
-
-**Phase 9: TWAP Orders** ✅ Complete
-- twapOrder() / twapCancel() - TWAP order placement and cancellation
-- subscribeTwapStates() - TWAP execution states
-- subscribeUserTwapSliceFills() - Individual TWAP fills
-- subscribeUserTwapHistory() - Historical TWAP events
-
-**Results:**
-- API Coverage: 31 → 45 methods (+45%)
-- Test Files: 5 → 17 (+240%)
-- Static Analysis: ✅ Zero issues
-- ExchangeClient: 11 → 13 methods
-- WebSocketClient: 11 → 14 subscriptions
+Current roadmap after reviewing the SDK against the official Hyperliquid docs
+on 2026-06-24.
 
 ---
 
-**Phase 10: Spot Market Support** ✅ Complete
-- InfoClient.spotMeta() - Get all spot tokens metadata
-- InfoClient.spotMetaAndAssetCtxs() - Get spot metadata + market data
-- InfoClient.tokenDetails() - Get detailed token information by token ID
+## Status summary
 
-**Phase 11: Sub-Account Management** ✅ Complete
-- InfoClient.subAccounts() - Query user's sub-accounts ✅
-- ExchangeClient vaultAddress support - Trade on behalf of sub-accounts ✅
-- Note: Sub-account creation/deletion done via web UI, not API
+The SDK already covers the important live-trading base:
 
-**Results (Phase 10-11):**
-- InfoClient: 21 → 22 methods (+5%)
-- Enhanced all 9 ExchangeClient action methods with vaultAddress parameter
-- Test Coverage: 12 → 13 passing tests (93% pass rate)
+- core Info API market and account queries
+- signed order placement, cancellation, modification, leverage, margin, TWAP,
+  spot transfer, sub-account transfer, vault transfer, and withdrawal actions
+- HIP-3 DEX metadata and trading support
+- 15 WebSocket subscriptions
+- EIP-712 signing and Keccak action hashing
+- live integration examples and tests
 
----
-
-**Phase 12: HIP-3 Builder-Deployed Perpetuals** ✅ Complete
-- InfoClient.perpDexs() - Get list of all HIP-3 DEXs ✅
-- InfoClient.meta(dex) - NEW: Fetch metadata for specific DEX ✅
-- InfoClient.metaAndAssetCtxs(dex) - Enhanced with optional dex parameter ✅
-- Complete HIP-3 trading support (asset ID calculation + API queries) ✅
-
-**Results (Phase 12):**
-- InfoClient: 22 → 24 methods (+9% - added perpDexs() and meta())
-- Enhanced 1 existing method (metaAndAssetCtxs) with dex parameter
-- Test Coverage: 13 → 14 passing tests (93% pass rate)
-- Full HIP-3 support: Can query DEXs, get metadata, calculate asset IDs, place orders
-- Example file: hip3_trading_example.dart demonstrates complete workflow
+The next phase should clean up current-doc parity gaps, not rebuild the trading
+core.
 
 ---
 
-**Phase 13: Additional Utilities** ✅ Complete
-- InfoClient.userFees() - Get user's fee structure and trading costs ✅
-- InfoClient.userNonFundingLedgerUpdates() - Get deposits, withdrawals, transfers ✅
-- ExchangeClient.usdClassTransfer() - Transfer USDC between spot and perp ✅
-- ExchangeClient.usdSend() - Send USDC to another address ✅
+## Completed foundation
 
-**Results (Phase 13):**
-- InfoClient: 24 → 26 methods (+8% increase)
-- ExchangeClient: 13 → 15 methods (+15% increase)
-- Test Coverage: 14 → 17 tests (3 new test files with comprehensive coverage)
-- New models: UserFees, LedgerUpdate, LedgerDelta, DailyUserVolume, ActiveStakingDiscount, FeeTrial
-- Full account management: Can query fees, track ledger history, transfer funds
+Keep these marked complete:
 
----
-
-**Phase 14: WebSocket Ledger Subscriptions** ✅ Complete
-- WebSocketClient.subscribeUserNonFundingLedgerUpdates() - Real-time ledger events ✅
-
-**Results (Phase 14):**
-- WebSocketClient: 14 → 15 subscriptions (+7% increase)
-- Test Coverage: 17 → 18 passing tests (94% pass rate)
-- New capability: Real-time monitoring of deposits, withdrawals, USD transfers
-- Example file: ledger_monitor_example.dart demonstrates event monitoring
-
-**Target Coverage After Phase 14:**
-- InfoClient: 26 methods (47% of TypeScript SDK)
-- ExchangeClient: 15 methods (30% of TypeScript SDK)
-- WebSocketClient: 15 subscriptions (~79% of TypeScript SDK)
-- **Overall: ~52% coverage** of commonly-used methods
+- Core REST transport
+- Core WebSocket transport with reconnect/resubscribe behavior
+- Wallet adapter abstraction
+- Private-key wallet adapter
+- Keccak action hash fix
+- EIP-712 signing helpers
+- Perp and spot order placement
+- Order cancellation by oid and cloid
+- Order modification and batch modification
+- Dead man's switch via `scheduleCancel`
+- TWAP order and cancel actions
+- Leverage and isolated margin updates
+- Core USDC transfer and withdrawal
+- Spot/perp class transfer
+- Spot token send
+- Cross-DEX `sendAsset`
+- Sub-account transfers
+- Vault queries and vault transfer
+- Builder-fee approval and max-fee query
+- HIP-3 metadata and DEX-aware asset lookup
+- Main market WebSocket streams
+- User event, fill, funding, ledger, notification, WebData3, and TWAP streams
 
 ---
 
-**Phase 15: Spot Token Trading & Order Placement** ✅ Complete
-- InfoClient.getSpotAssetId() - Helper to calculate spot asset IDs ✅
-- ExchangeClient.spotUser() - Toggle spot dusting settings ✅
-- ExchangeClient.spotSend() - Send spot tokens to another address ✅
-- ExchangeClient.sendAsset() - Transfer assets between DEXs/addresses/sub-accounts ✅
-- ExchangeClient.subAccountTransfer() - Transfer USDC to/from sub-accounts ✅
-- ExchangeClient.subAccountSpotTransfer() - Transfer spot tokens to/from sub-accounts ✅
+## P0 - WebSocket parity and correctness cleanup
 
-**Results (Phase 15):**
-- InfoClient: 26 → 27 methods (+4% increase)
-- ExchangeClient: 15 → 20 methods (+33% increase)
-- Test Coverage: 18 → 19 passing tests (95% pass rate)
-- New models: Multiple spot-related models
-- Full spot trading: Can place orders, transfer tokens, manage sub-accounts
-- Example files: spot_trading_example.dart, spot_order_trading_example.dart
+This is the first cleanup target because the SDK advertises high WebSocket
+coverage, but the current official docs list 22 subscriptions and the SDK
+currently exposes 15 typed methods.
 
----
+### Add typed subscriptions
 
-**Phase 16: Vault Operations** ✅ Complete
-- InfoClient.vaultDetails() - Get detailed vault information ✅
-- InfoClient.vaultSummaries() - Get all vault summaries ✅
-- InfoClient.leadingVaults() - Get vaults by specific leader ✅
-- InfoClient.userVaultEquities() - Get user's vault positions ✅
-- ExchangeClient.vaultTransfer() - Deposit/withdraw USDC to/from vaults ✅
+- `subscribeClearinghouseState(user, dex?)`
+- `subscribeOpenOrders(user, dex?)`
+- `subscribeActiveAssetCtx(coin)`
+- `subscribeActiveAssetData(user, coin)`
+- `subscribeSpotState(user, isPortfolioMargin?)`
+- `subscribeAllDexsClearinghouseState(user)`
+- `subscribeAllDexsAssetCtxs()`
 
-**Results (Phase 16):**
-- InfoClient: 27 → 31 methods (+15% increase)
-- ExchangeClient: 20 → 21 methods (+5% increase)
-- Test Coverage: 19 → 21 passing tests (95% pass rate)
-- New models: VaultDetails, VaultSummary, LeadingVault, UserVaultEquity, VaultPortfolio, PortfolioPeriod, VaultFollower, VaultRelationship
-- Complete vault management: Can query vaults, check positions, deposit/withdraw funds
-- Example file: vault_example.dart demonstrates full vault operations
-- Known issue: vaultSummaries may return empty (use leadingVaults instead)
+### Fix existing subscription builder issues
 
-**Target Coverage After Phase 16:**
-- InfoClient: 31 methods (56% of TypeScript SDK)
-- ExchangeClient: 21 methods (42% of TypeScript SDK)
-- WebSocketClient: 15 subscriptions (~79% of TypeScript SDK)
-- **Overall: ~56% coverage** of commonly-used methods
+- Ensure `SubscriptionType.clearinghouseState` emits `{ type: "clearinghouseState", user, dex? }`
+- Ensure `SubscriptionType.openOrders` emits `{ type: "openOrders", user, dex? }`
+- Add optional `dex` support for `allMids` and `twapStates`
+- Add `aggregateByTime` support for `userFills`
+- Preserve `isSnapshot` metadata for snapshot-capable user streams
+
+### Tests
+
+- Unit-test subscription payload construction for every enum value.
+- Add opt-in live WebSocket tests for the seven newly typed subscriptions.
 
 ---
 
-### 📋 Upcoming Phases
+## P0 - low-risk Info API parity
 
-## Immediate (Optional SDK Polish)
-**Time:** 1-2 days
+These are request/response wrappers with no new signing surface.
 
-1. **Write README.md** ✅ Complete
-   - Installation instructions
-   - Quick start examples (REST, WebSocket, trading)
-   - Link to full API docs
-   - License and contribution guidelines
+- `userRateLimit(user)`
+- `userRole(user)`
+- `referral(user)`
+- `delegations(user)`
+- `delegatorSummary(user)`
+- `delegatorHistory(user)`
+- `delegatorRewards(user)`
+- `userDexAbstraction(user)`
+- `userSetAbstraction(user)`
+- `userTwapSliceFills(user)`
 
-2. **Add dartdoc comments**
-   - Document all public APIs
-   - Add code examples to doc comments
-   - Run `dart doc` to generate HTML docs
+### Parameter cleanup
 
-3. **Publish to pub.dev**
-   - Create CHANGELOG.md with v0.1.0 entry ✅ Complete
-   - Choose license (MIT recommended) ✅ Complete
-   - Run `dart pub publish --dry-run` to verify
-   - Publish as `hyperliquid_dart` v0.1.0
-
----
-
-## Phase 1: Riten-Flutter App Setup (1-2 weeks)
-**Goal:** Basic app with Privy auth + SDK integration
-
-**Week 1: Dependencies & Config**
-1. Add SDK dependency to `pubspec.yaml`:
-   ```yaml
-   dependencies:
-     hyperliquid_dart:
-       path: ../Hyperliquid-Dart-SDK
-   ```
-
-2. Lock orientation to landscape:
-   - `android/app/src/main/AndroidManifest.xml`: Add `android:screenOrientation="sensorLandscape"`
-   - `ios/Runner/Info.plist`: Remove portrait orientations
-   - `lib/main.dart`: Add `SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])`
-
-3. Install routing & state packages:
-   ```yaml
-   dependencies:
-     go_router: ^14.0.0
-     riverpod: ^2.6.1
-     flutter_riverpod: ^2.6.1
-     privy_flutter: ^0.6.0
-     flutter_dotenv: ^5.2.1
-   ```
-
-**Week 2: Auth & Basic Navigation**
-1. Set up `go_router` with 3 routes:
-   - `/login` — Privy email login screen
-   - `/trading` — Main trading screen (protected)
-   - `/portfolio` — Portfolio screen (protected)
-
-2. Build `PrivyWalletAdapter`:
-   ```dart
-   class PrivyWalletAdapter implements WalletAdapter {
-     final PrivyClient _privy;
-
-     @override
-     Future<String> getAddress() async {
-       return await _privy.getAddress();
-     }
-
-     @override
-     Future<String> signTypedData(Map<String, dynamic> typedData) async {
-       return await _privy.eth_signTypedData_v4(typedData);
-     }
-   }
-   ```
-
-3. Create Riverpod providers:
-   - `hyperliquidProvider` — InfoClient + ExchangeClient + WebSocketClient
-   - `walletProvider` — PrivyWalletAdapter
-   - `authProvider` — Login state
-
-4. Test end-to-end:
-   - Login with Privy → Get address → Place test order → Cancel
-
-**Gate:** Can login with Privy, sign EIP-712, and place/cancel order on mainnet
+- Add optional `dex` to `allMids`
+- Audit and add optional `dex` to user-scoped perp endpoints where the docs
+  support it, especially `openOrders`, `frontendOpenOrders`, and
+  `clearinghouseState`
+- Refresh candle interval constants to include all documented intervals:
+  `1m`, `3m`, `5m`, `15m`, `30m`, `1h`, `2h`, `4h`, `8h`, `12h`, `1d`, `3d`,
+  `1w`, `1M`
 
 ---
 
-## Phase 2: Real-Time Data Layer (1 week)
-**Goal:** Stream live market data into Riverpod state
+## P1 - signed account and admin actions
 
-1. Create WebSocket providers:
-   - `allMidsProvider` — Stream<Map<String, String>>
-   - `l2BookProvider(coin)` — Stream<L2Book>
-   - `candleProvider(coin, interval)` — Stream<List<Candle>>
+Add signed actions that are documented today but missing from `ExchangeClient`.
+These should be implemented with focused request models and tests for exact
+wire payload shape before any live-test expansion.
 
-2. Auto-reconnect handling:
-   - Listen to connection state
-   - Show "reconnecting" indicator
-   - Re-fetch initial state after reconnect
+- `approveAgent(agentAddress, agentName?)`
+- `reserveRequestWeight(weight)`
+- `noop()`
+- `claimRewards()`
+- `sendToEvmWithData(...)`
+- `cDeposit(wei)`
+- `cWithdraw(wei)`
+- staking delegate / undelegate
+- `userSetAbstraction(user, abstraction)`
+- `agentSetAbstraction(abstraction)`
+- deprecated compatibility wrappers:
+  `userDexAbstraction(user, enabled)` and `agentEnableDexAbstraction()`
+- `topUpIsolatedOnlyMargin(asset, leverage)`
 
-3. Memory management:
-   - Bound candles to last 500
-   - Bound L2 book to top 20 levels
-   - Dispose streams on route change
+### Design note
 
-**Gate:** Live BTC price updates at ~1/sec with <100MB memory after 1 hour
-
----
-
-## Phase 3: Core Trading UI (2-3 weeks)
-**Goal:** Orderbook, chart, and order placement
-
-1. **Orderbook widget** (3-4 days)
-   - Bid/ask split view
-   - Price, size, total columns
-   - Click-to-fill order form
-   - Highlight user orders
-
-2. **Candlestick chart** (3-4 days)
-   - Use Syncfusion Charts or Deriv flutter-chart
-   - 1m/5m/15m/1h/4h interval selector
-   - Volume bars
-   - Current price line
-
-3. **Order placement UI** (3-4 days)
-   - Market/limit/trigger tabs
-   - Size input with max/25%/50%/75% buttons
-   - Price input for limit orders
-   - Leverage selector
-   - Confirm modal with summary
-
-4. **Order notification system** (2-3 days)
-   - Listen to `orderUpdates` stream
-   - Show toast on fill/cancel/rejection
-   - Haptic feedback on order actions
-
-**Gate:** Can view live BTC orderbook, place and cancel orders from UI at 60fps
+Keep trading actions on `ExchangeClient`, but consider a small
+`AccountAdminClient` wrapper if the API starts to feel crowded. The signing
+pipeline can stay shared.
 
 ---
 
-## Phase 4: Position Management (1-2 weeks)
-1. Positions tab with PNL/ROE calculation
-2. Open orders tab with cancel buttons
-3. Close position modal
-4. Account summary header
+## P1 - Bridge2 completion
+
+The SDK has `withdraw3`, but the current Bridge2 docs also describe deposit
+flows and deposit-with-permit.
+
+- Add Bridge2 constants for mainnet and testnet bridge contracts.
+- Add USDC permit typed-data builder for deposit-with-permit.
+- Add helper models for permit payloads and signatures.
+- Document that normal deposits are Arbitrum transactions, not Hyperliquid
+  exchange actions.
+- Add tests for typed-data shape and signature splitting.
 
 ---
 
-## Phase 5-7: Advanced Features (4-6 weeks)
-- Portfolio screens
-- TWAP orders
-- Funding history
-- Settings & preferences
-- iOS + Android testing
+## P2 - deployment and builder-deployer clients
+
+These are specialized workflows and should not be mixed into normal trading
+helpers.
+
+### HIP-1/HIP-2 spot deployment
+
+Add a `SpotDeployClient` or `DeployClient` namespace for:
+
+- `registerToken2`
+- `userGenesis`
+- `genesis`
+- `registerSpot`
+- `registerHyperliquidity`
+- `setDeployerTradingFeeShare`
+- `enableQuoteToken`
+- `enableAlignedQuoteToken`
+- spot deploy auction status query wrappers
+
+### HIP-3 perp deployment
+
+Add a `PerpDeployClient` namespace for:
+
+- `registerAsset2`
+- `registerAsset`
+- `setOracle`
+- `setFundingMultipliers`
+- `setFundingInterestRates`
+- `haltTrading`
+- `setMarginTableIds`
+- `setFeeRecipient`
+- `setOpenInterestCaps`
+- `setSubDeployers`
+- `setMarginModes`
+- `setFeeScale`
+- `setGrowthModes`
+- `setPerpAnnotation`
+- perp deploy auction status query wrappers
+
+### Tests
+
+- Payload serialization tests are required.
+- Live tests should be opt-in only because deployment actions are expensive and
+  stateful.
 
 ---
 
-## Estimated Timeline
+## P2 - documentation and examples cleanup
 
-| Phase | Duration | Milestone |
-|-------|----------|-----------|
-| SDK Polish | 1-2 days | pub.dev published |
-| App Setup | 1-2 weeks | Login + test order |
-| Data Layer | 1 week | Live streaming works |
-| Core UI | 2-3 weeks | Trade from UI |
-| Position Mgmt | 1-2 weeks | Full trading flow |
-| Advanced | 4-6 weeks | Feature parity with RN app |
-| **Total** | **10-14 weeks** | Production-ready Flutter app |
+- Replace stale TypeScript SDK percentage claims with a generated coverage
+  matrix based on current official docs.
+- Add examples for:
+  - API wallet approval
+  - user rate limits and reserve weight
+  - staking read and write flows
+  - abstraction state read and update
+  - full WebSocket subscription matrix
+  - Bridge2 deposit-with-permit typed data
+- Regenerate Dart API docs after public API changes.
+- Keep live-test prerequisites explicit so users do not confuse account
+  eligibility failures with SDK failures.
+
+---
+
+## Explicit non-priorities
+
+These should wait until the current-doc cleanup is done:
+
+- cosmetic refactors that do not improve parity
+- app-specific Flutter state management
+- broad deployer live tests
+- publishing until README coverage claims match the current docs
+
+---
+
+## Short-term milestone proposal
+
+### v0.2.0 - WebSocket and Info cleanup
+
+- Missing typed WebSocket subscriptions
+- Subscription payload fixes
+- Snapshot metadata preservation
+- User role, rate limit, referral, staking read, abstraction read, and TWAP
+  slice fill Info wrappers
+- Candle interval refresh
+- Optional `dex` parameter audit
+
+### v0.3.0 - account actions and staking
+
+- API wallet approval
+- reserve request weight
+- nonce invalidation
+- claim rewards
+- staking deposit, withdrawal, delegate, undelegate
+- abstraction setters
+- send to EVM with data
+- alternate isolated-margin top-up
+
+### v0.4.0 - Bridge2 and deployer foundations
+
+- Bridge2 deposit-with-permit helpers
+- HIP-1/HIP-2 deploy payload support
+- HIP-3 deploy payload support
+- deployment info queries
+- generated coverage matrix
+
+---
+
+## Bottom line
+
+As of 2026-06-24, the SDK is already usable for normal trading integrations.
+The roadmap now is about closing the current official-doc gap cleanly:
+
+- fix WebSocket parity first
+- add low-risk Info wrappers
+- add signed account/staking/admin actions
+- isolate advanced deployer workflows into dedicated clients
+- update docs so coverage claims stay true
