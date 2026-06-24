@@ -18,7 +18,9 @@ The SDK already covers the important live-trading base:
 - live integration examples and tests
 
 The next phase should clean up current-doc parity gaps, not rebuild the trading
-core.
+core. The most complete external reference found so far is
+`nktkas/hyperliquid`, which already exposes HIP-4 outcome-market methods and a
+larger current API surface than this Dart SDK.
 
 ---
 
@@ -54,8 +56,8 @@ Keep these marked complete:
 ## P0 - WebSocket parity and correctness cleanup
 
 This is the first cleanup target because the SDK advertises high WebSocket
-coverage, but the current official docs list 22 subscriptions and the SDK
-currently exposes 15 typed methods.
+coverage, but the current official docs and `nktkas/hyperliquid` expose more
+subscriptions than the SDK's 15 typed methods.
 
 ### Add typed subscriptions
 
@@ -66,6 +68,13 @@ currently exposes 15 typed methods.
 - `subscribeSpotState(user, isPortfolioMargin?)`
 - `subscribeAllDexsClearinghouseState(user)`
 - `subscribeAllDexsAssetCtxs()`
+- `subscribeActiveSpotAssetCtx(coin)`
+- `subscribeAssetCtxs(dex?)`
+- `subscribeFastAssetCtxs()`
+- `subscribeSpotAssetCtxs()`
+- `subscribeUserHistoricalOrders(user)`
+- `subscribeWebData2(user)`
+- `subscribeOutcomeMetaUpdates()`
 
 ### Fix existing subscription builder issues
 
@@ -78,7 +87,39 @@ currently exposes 15 typed methods.
 ### Tests
 
 - Unit-test subscription payload construction for every enum value.
-- Add opt-in live WebSocket tests for the seven newly typed subscriptions.
+- Add opt-in live WebSocket tests for newly typed subscriptions.
+
+---
+
+## P0 - HIP-4 outcome-market parity
+
+HIP-4 was missing from the prior plan. The official docs describe fully
+collateralized outcome markets used for prediction-market and bounded
+options-like instruments. The `nktkas/hyperliquid` SDK already exposes the key
+API pieces.
+
+### Info and WebSocket
+
+- Add `InfoClient.outcomeMeta()`
+- Add `InfoClient.settledOutcome(...)`
+- Add `WebSocketClient.subscribeOutcomeMetaUpdates()`
+- Add outcome metadata models including side specs, settlement data, questions,
+  and linked outcomes
+
+### Exchange actions
+
+Add `ExchangeClient.userOutcome(...)` or a dedicated `OutcomeClient` wrapping:
+
+- `splitOutcome(outcome, amount)`
+- `mergeOutcome(outcome, amount?)`
+- `mergeQuestion(question, amount?)`
+- `negateOutcome(question, outcome, amount)`
+
+### Asset handling
+
+- Audit outcome asset IDs against the current asset-id docs.
+- Add helpers so outcome tokens are not treated as ordinary spot symbols.
+- Add docs describing merged Yes/No order books and settlement fractions.
 
 ---
 
@@ -96,6 +137,33 @@ These are request/response wrappers with no new signing surface.
 - `userDexAbstraction(user)`
 - `userSetAbstraction(user)`
 - `userTwapSliceFills(user)`
+- `userTwapSliceFillsByTime(user, startTime, endTime?)`
+- `twapHistory(user)`
+- `outcomeMeta()`
+- `settledOutcome(...)`
+- `activeAssetData(user, coin)`
+- `approvedBuilders(user)`
+- `allPerpMetas()`
+- `predictedFundings()`
+- `exchangeStatus()`
+- `extraAgents(user)`
+- `preTransferCheck(user, source, destination, amount?)`
+- `userToMultiSigSigners(user)`
+- `userAbstraction(user)`
+- `subAccounts2(user)`
+- `validatorSummaries()`
+- `validatorL1Votes()`
+- `perpsAtOpenInterestCap(...)`
+- `perpDexStatus(...)`
+- `perpDexLimits(...)`
+- `perpAnnotation(...)`
+- `perpCategories()`
+- `perpConciseAnnotations()`
+- borrow/lend info: `allBorrowLendReserveStates`,
+  `borrowLendReserveState`, `borrowLendUserState`, `userBorrowLendInterest`
+- network/status info: gossip priority auction status, gossip root IPs,
+  margin table, max market order notionals, liquidatable accounts, legal/VIP
+  checks
 
 ### Parameter cleanup
 
@@ -119,6 +187,26 @@ wire payload shape before any live-test expansion.
 - `reserveRequestWeight(weight)`
 - `noop()`
 - `claimRewards()`
+- `setReferrer(code)`
+- `registerReferrer(code)`
+- `createSubAccount(name)`
+- `subAccountModify(...)`
+- `createVault(...)`
+- `vaultDistribute(...)`
+- `vaultModify(...)`
+- `convertToMultiSigUser(...)`
+- `evmUserModify(...)`
+- `agentSendAsset(...)`
+- `borrowLend(...)`
+- `authorizeAqav2Role(...)`
+- `linkStakingUser(...)`
+- `stakingLinkDisableTradingUser(...)`
+- `cSignerAction(...)`
+- `cValidatorAction(...)`
+- `validatorL1Stream(...)`
+- `finalizeEvmContract(...)`
+- `gossipPriorityBid(...)`
+- `hip3LiquidatorTransfer(...)`
 - `sendToEvmWithData(...)`
 - `cDeposit(wei)`
 - `cWithdraw(wei)`
@@ -134,6 +222,10 @@ wire payload shape before any live-test expansion.
 Keep trading actions on `ExchangeClient`, but consider a small
 `AccountAdminClient` wrapper if the API starts to feel crowded. The signing
 pipeline can stay shared.
+
+Also add request-expiry support (`expiresAfter`) and multi-sig signing support
+as first-class execution options, matching the current official Python SDK and
+`nktkas/hyperliquid`.
 
 ---
 
@@ -237,9 +329,11 @@ These should wait until the current-doc cleanup is done:
   slice fill Info wrappers
 - Candle interval refresh
 - Optional `dex` parameter audit
+- HIP-4 `outcomeMeta`, `settledOutcome`, and `outcomeMetaUpdates`
 
-### v0.3.0 - account actions and staking
+### v0.3.0 - HIP-4 write actions and account actions
 
+- HIP-4 `userOutcome` split/merge/negate actions
 - API wallet approval
 - reserve request weight
 - nonce invalidation
@@ -248,6 +342,7 @@ These should wait until the current-doc cleanup is done:
 - abstraction setters
 - send to EVM with data
 - alternate isolated-margin top-up
+- request expiry and multi-sig execution support
 
 ### v0.4.0 - Bridge2 and deployer foundations
 
@@ -255,6 +350,7 @@ These should wait until the current-doc cleanup is done:
 - HIP-1/HIP-2 deploy payload support
 - HIP-3 deploy payload support
 - deployment info queries
+- borrow/lend and remaining network/status Info endpoints
 - generated coverage matrix
 
 ---
@@ -265,6 +361,7 @@ As of 2026-06-24, the SDK is already usable for normal trading integrations.
 The roadmap now is about closing the current official-doc gap cleanly:
 
 - fix WebSocket parity first
+- add HIP-4 outcome-market support
 - add low-risk Info wrappers
 - add signed account/staking/admin actions
 - isolate advanced deployer workflows into dedicated clients
