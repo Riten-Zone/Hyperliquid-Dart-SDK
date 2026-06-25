@@ -1,6 +1,6 @@
 # Hyperliquid Dart SDK - Achievements
 
-Last reviewed against the official Hyperliquid docs on 2026-06-24.
+Last reviewed against the official Hyperliquid docs on 2026-06-25.
 
 Sources checked:
 

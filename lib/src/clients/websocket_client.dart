@@ -18,7 +18,11 @@ class SubscriptionHandle {
   final WebSocketClient _client;
 
   SubscriptionHandle._(
-      this._key, this._subscription, this._subMessage, this._client);
+    this._key,
+    this._subscription,
+    this._subMessage,
+    this._client,
+  );
 
   /// Unsubscribe and stop receiving updates.
   Future<void> cancel() async {
@@ -63,10 +67,10 @@ class WebSocketClient {
     Duration pingInterval = const Duration(seconds: 30),
     int maxReconnectAttempts = 10,
   }) : _transport = WebSocketTransport(
-          isTestnet: isTestnet,
-          pingInterval: pingInterval,
-          maxReconnectAttempts: maxReconnectAttempts,
-        ) {
+         isTestnet: isTestnet,
+         pingInterval: pingInterval,
+         maxReconnectAttempts: maxReconnectAttempts,
+       ) {
     // Re-subscribe on reconnection.
     _transport.stateChanges.listen((state) {
       if (state == WsConnectionState.connected) {
@@ -84,6 +88,200 @@ class WebSocketClient {
   // ---------------------------------------------------------------------------
   // Typed subscription methods
   // ---------------------------------------------------------------------------
+
+  /// Subscribe to user clearinghouse state updates.
+  SubscriptionHandle subscribeClearinghouseState(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler, {
+    String? dex,
+  }) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.clearinghouseState,
+      user: user,
+      dex: dex,
+    );
+
+    return _subscribe('clearinghouseState:$user:${dex ?? ''}', msg, (data) {
+      if (data['channel'] == 'clearinghouseState') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to user open-order snapshots/updates.
+  SubscriptionHandle subscribeOpenOrders(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler, {
+    String? dex,
+  }) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.openOrders,
+      user: user,
+      dex: dex,
+    );
+
+    return _subscribe('openOrders:$user:${dex ?? ''}', msg, (data) {
+      if (data['channel'] == 'openOrders') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to context updates for all perpetual assets.
+  SubscriptionHandle subscribeAssetCtxs(
+    SubscriptionHandler<Map<String, dynamic>> handler, {
+    String? dex,
+  }) {
+    final msg = buildSubscriptionMessage(SubscriptionType.assetCtxs, dex: dex);
+
+    return _subscribe('assetCtxs:${dex ?? ''}', msg, (data) {
+      if (data['channel'] == 'assetCtxs') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to fast mark/mid updates for all assets.
+  ///
+  /// The server may send this channel as a compressed payload. This SDK
+  /// currently exposes the raw decoded WebSocket message.
+  SubscriptionHandle subscribeFastAssetCtxs(
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(SubscriptionType.fastAssetCtxs);
+
+    return _subscribe('fastAssetCtxs', msg, (data) {
+      if (data['channel'] == 'fastAssetCtxs') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to context updates for one perpetual asset.
+  SubscriptionHandle subscribeActiveAssetCtx(
+    String coin,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.activeAssetCtx,
+      coin: coin,
+    );
+
+    return _subscribe('activeAssetCtx:$coin', msg, (data) {
+      if (data['channel'] == 'activeAssetCtx') {
+        final rawData = data['data'];
+        if (rawData is Map && rawData['coin'] == coin) {
+          handler(data);
+        } else if (rawData is! Map) {
+          handler(data);
+        }
+      }
+    });
+  }
+
+  /// Subscribe to trading data updates for one user and asset.
+  SubscriptionHandle subscribeActiveAssetData(
+    String user,
+    String coin,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.activeAssetData,
+      user: user,
+      coin: coin,
+    );
+
+    return _subscribe('activeAssetData:$user:$coin', msg, (data) {
+      if (data['channel'] == 'activeAssetData') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to context updates for one spot asset, e.g. `@1`.
+  SubscriptionHandle subscribeActiveSpotAssetCtx(
+    String coin,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.activeSpotAssetCtx,
+      coin: coin,
+    );
+
+    return _subscribe('activeSpotAssetCtx:$coin', msg, (data) {
+      if (data['channel'] == 'activeSpotAssetCtx' ||
+          data['channel'] == 'activeAssetCtx') {
+        final rawData = data['data'];
+        if (rawData is Map && rawData['coin'] == coin) {
+          handler(data);
+        } else if (rawData is! Map) {
+          handler(data);
+        }
+      }
+    });
+  }
+
+  /// Subscribe to user spot state updates.
+  SubscriptionHandle subscribeSpotState(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler, {
+    bool? ignorePortfolioMargin,
+  }) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.spotState,
+      user: user,
+      ignorePortfolioMargin: ignorePortfolioMargin,
+    );
+
+    return _subscribe('spotState:$user', msg, (data) {
+      if (data['channel'] == 'spotState') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to context updates for all spot assets.
+  SubscriptionHandle subscribeSpotAssetCtxs(
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(SubscriptionType.spotAssetCtxs);
+
+    return _subscribe('spotAssetCtxs', msg, (data) {
+      if (data['channel'] == 'spotAssetCtxs') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to all DEX clearinghouse states for a user.
+  SubscriptionHandle subscribeAllDexsClearinghouseState(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.allDexsClearinghouseState,
+      user: user,
+    );
+
+    return _subscribe('allDexsClearinghouseState:$user', msg, (data) {
+      if (data['channel'] == 'allDexsClearinghouseState') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to asset contexts across all DEXs.
+  SubscriptionHandle subscribeAllDexsAssetCtxs(
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(SubscriptionType.allDexsAssetCtxs);
+
+    return _subscribe('allDexsAssetCtxs', msg, (data) {
+      if (data['channel'] == 'allDexsAssetCtxs') {
+        handler(data);
+      }
+    });
+  }
 
   /// Subscribe to real-time Level 2 orderbook updates.
   ///
@@ -203,9 +401,11 @@ class WebSocketClient {
       if (channel == 'trades') {
         final tradeList = data['data'] as List<dynamic>?;
         if (tradeList != null) {
-          handler(tradeList
-              .map((e) => Trade.fromJson(e as Map<String, dynamic>))
-              .toList());
+          handler(
+            tradeList
+                .map((e) => Trade.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
         }
       }
     });
@@ -258,8 +458,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<NotificationMessage> handler,
   ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.notification, user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.notification,
+      user: user,
+    );
 
     return _subscribe('notification:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -277,12 +479,16 @@ class WebSocketClient {
   /// Returns real-time updates on all active TWAP orders.
   SubscriptionHandle subscribeTwapStates(
     String user,
-    SubscriptionHandler<List<TwapState>> handler,
-  ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.twapStates, user: user);
+    SubscriptionHandler<List<TwapState>> handler, {
+    String? dex,
+  }) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.twapStates,
+      user: user,
+      dex: dex,
+    );
 
-    return _subscribe('twapStates:$user', msg, (data) {
+    return _subscribe('twapStates:$user:${dex ?? ''}', msg, (data) {
       final channel = data['channel'] as String?;
       if (channel == 'twapStates') {
         final rawData = data['data'];
@@ -310,8 +516,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<List<TwapHistoryEvent>> handler,
   ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.userTwapHistory, user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userTwapHistory,
+      user: user,
+    );
 
     return _subscribe('userTwapHistory:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -322,7 +530,9 @@ class WebSocketClient {
         if (rawData is List) {
           handler(
             rawData
-                .map((e) => TwapHistoryEvent.fromJson(e as Map<String, dynamic>))
+                .map(
+                  (e) => TwapHistoryEvent.fromJson(e as Map<String, dynamic>),
+                )
                 .toList(),
           );
         } else if (rawData is Map) {
@@ -341,8 +551,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<List<TwapSliceFill>> handler,
   ) {
-    final msg = buildSubscriptionMessage(SubscriptionType.userTwapSliceFills,
-        user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userTwapSliceFills,
+      user: user,
+    );
 
     return _subscribe('userTwapSliceFills:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -379,11 +591,12 @@ class WebSocketClient {
   /// });
   /// ```
   SubscriptionHandle subscribeAllMids(
-    SubscriptionHandler<Map<String, String>> handler,
-  ) {
-    final msg = buildSubscriptionMessage(SubscriptionType.allMids);
+    SubscriptionHandler<Map<String, String>> handler, {
+    String? dex,
+  }) {
+    final msg = buildSubscriptionMessage(SubscriptionType.allMids, dex: dex);
 
-    return _subscribe('allMids', msg, (data) {
+    return _subscribe('allMids:${dex ?? ''}', msg, (data) {
       final channel = data['channel'] as String?;
       if (channel == 'allMids') {
         final mids = data['data'] as Map<String, dynamic>?;
@@ -417,20 +630,77 @@ class WebSocketClient {
   /// ```
   SubscriptionHandle subscribeUserFills(
     String user,
-    SubscriptionHandler<List<UserFill>> handler,
-  ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.userFills, user: user);
+    SubscriptionHandler<List<UserFill>> handler, {
+    bool? aggregateByTime,
+  }) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userFills,
+      user: user,
+      aggregateByTime: aggregateByTime,
+    );
 
-    return _subscribe('userFills:$user', msg, (data) {
+    return _subscribe('userFills:$user:${aggregateByTime ?? false}', msg, (
+      data,
+    ) {
       final channel = data['channel'] as String?;
       if (channel == 'userFills') {
-        final fills = data['data'] as List<dynamic>?;
+        final rawData = data['data'];
+        final fills = rawData is List
+            ? rawData
+            : rawData is Map<String, dynamic>
+            ? rawData['fills'] as List<dynamic>?
+            : null;
         if (fills != null) {
-          handler(fills
-              .map((e) => UserFill.fromJson(e as Map<String, dynamic>))
-              .toList());
+          handler(
+            fills
+                .map((e) => UserFill.fromJson(e as Map<String, dynamic>))
+                .toList(),
+          );
         }
+      }
+    });
+  }
+
+  /// Subscribe to user historical-order updates.
+  SubscriptionHandle subscribeUserHistoricalOrders(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userHistoricalOrders,
+      user: user,
+    );
+
+    return _subscribe('userHistoricalOrders:$user', msg, (data) {
+      if (data['channel'] == 'userHistoricalOrders') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to webData2 aggregate user information.
+  SubscriptionHandle subscribeWebData2(
+    String user,
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(SubscriptionType.webData2, user: user);
+
+    return _subscribe('webData2:$user', msg, (data) {
+      if (data['channel'] == 'webData2') {
+        handler(data);
+      }
+    });
+  }
+
+  /// Subscribe to HIP-4 outcome metadata updates.
+  SubscriptionHandle subscribeOutcomeMetaUpdates(
+    SubscriptionHandler<Map<String, dynamic>> handler,
+  ) {
+    final msg = buildSubscriptionMessage(SubscriptionType.outcomeMetaUpdates);
+
+    return _subscribe('outcomeMetaUpdates', msg, (data) {
+      if (data['channel'] == 'outcomeMetaUpdates') {
+        handler(data);
       }
     });
   }
@@ -457,8 +727,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<List<Map<String, dynamic>>> handler,
   ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.orderUpdates, user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.orderUpdates,
+      user: user,
+    );
 
     return _subscribe('orderUpdates:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -491,8 +763,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<Map<String, dynamic>> handler,
   ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.userEvents, user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userEvents,
+      user: user,
+    );
 
     return _subscribe('userEvents:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -524,8 +798,10 @@ class WebSocketClient {
     String user,
     SubscriptionHandler<Map<String, dynamic>> handler,
   ) {
-    final msg =
-        buildSubscriptionMessage(SubscriptionType.userFundings, user: user);
+    final msg = buildSubscriptionMessage(
+      SubscriptionType.userFundings,
+      user: user,
+    );
 
     return _subscribe('userFundings:$user', msg, (data) {
       final channel = data['channel'] as String?;
@@ -576,9 +852,11 @@ class WebSocketClient {
         if (dataMap != null) {
           final updates = dataMap['nonFundingLedgerUpdates'] as List<dynamic>?;
           if (updates != null) {
-            handler(updates
-                .map((e) => LedgerUpdate.fromJson(e as Map<String, dynamic>))
-                .toList());
+            handler(
+              updates
+                  .map((e) => LedgerUpdate.fromJson(e as Map<String, dynamic>))
+                  .toList(),
+            );
           }
         }
       }

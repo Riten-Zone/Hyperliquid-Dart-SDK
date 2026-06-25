@@ -1,7 +1,7 @@
 # Hyperliquid Dart SDK - Roadmap
 
 Current roadmap after reviewing the SDK against the official Hyperliquid docs
-on 2026-06-24.
+on 2026-06-25.
 
 ---
 
