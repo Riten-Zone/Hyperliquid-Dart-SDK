@@ -133,8 +133,7 @@ Implemented typed subscriptions:
 The current docs and the newer TypeScript SDK expose a wider surface than this
 SDK currently wraps. The remaining gap is no longer "basic trading"; it is
 account administration, staking, abstraction controls, deployment actions,
-borrow/lend endpoints, newer network/status endpoints, and documentation for
-the newly added HIP-4 outcome-market workflows.
+borrow/lend endpoints, and newer network/status endpoints.
 
 ### High-confidence missing Info endpoints
 
@@ -250,9 +249,6 @@ subscription payloads.
 - Asset deployment and deployer operations are specialized and should be
   isolated from the regular trading client rather than mixed into
   `ExchangeClient`.
-- HIP-4 outcome markets add spot-like trading with different asset-id,
-  metadata, settlement, and split/merge/negate semantics. These should get
-  dedicated models/helpers rather than being treated as ordinary spot tokens.
 - `nktkas/hyperliquid` is currently the strongest parity reference. It exposes
   HIP-4, borrow/lend, additional WebSocket channels, multi-sig, request expiry,
   vault creation/modification, referrer actions, and more exchange/admin
@@ -264,17 +260,15 @@ subscription payloads.
 
 The new plan should clean up the remaining gap in this order:
 
-1. Add HIP-4 docs/examples for outcome asset ids, merged Yes/No books, and
-   settlement fractions.
-2. Add low-risk Info endpoint parity for rate limits, role, referrals, staking
+1. Add low-risk Info endpoint parity for rate limits, role, referrals, staking
    read APIs, abstraction state, TWAP slice fills, borrow/lend, and deployer
    status.
-3. Add account and admin Exchange actions: API wallet approval, reserve weight,
+2. Add account and admin Exchange actions: API wallet approval, reserve weight,
    nonce invalidation, abstraction controls, reward claim, staking actions, and
    EVM transfer with data.
-4. Split advanced deployer functionality into dedicated clients for HIP-1/HIP-2
+3. Split advanced deployer functionality into dedicated clients for HIP-1/HIP-2
    spot deployment and HIP-3 perp deployment.
-5. Refresh README/API docs and examples so the stated coverage matches the
+4. Refresh README/API docs and examples so the stated coverage matches the
    current official docs.
 
 ---
@@ -293,6 +287,5 @@ The main gap is current official-doc parity around:
 - API wallet approval and operational account actions
 - Bridge2 deposit-with-permit
 - HIP-1/HIP-2 and HIP-3 deployer workflows
-- HIP-4 outcome-market docs and examples
 - borrow/lend and newer network/status endpoints
 - multi-sig and request-expiry support

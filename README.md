@@ -15,6 +15,7 @@ A Dart SDK for the [Hyperliquid](https://hyperliquid.xyz) decentralized exchange
 - **Wallet Adapters** — Built-in support for raw private keys; bring your own wallet (Privy, Web3Auth, etc.)
 - **Type-Safe** — Comprehensive Dart models for all API responses
 - **HIP-3 DEX Support** — Query and trade on builder-deployed perpetual DEXs
+- **HIP-4 Outcome Markets** — Outcome metadata, asset helpers, split/merge/negate actions, and outcome order support
 - **Minimal Dependencies** — Only 4 runtime dependencies, no bloat
 - **Production-Ready** — 21 integration tests passing (95%), verified against live mainnet
 - **TypeScript SDK Parity** — 56% InfoClient, 42% ExchangeClient, 79% WebSocketClient coverage (actively expanding)
@@ -206,6 +207,12 @@ final exchange = ExchangeClient(wallet: wallet);
 | `tokenDetails(tokenId)` | Get detailed token information by token ID |
 | `spotClearinghouseState(address)` | Get user's spot token balances |
 
+**HIP-4 Outcome Markets**
+| Method | Description |
+|--------|-------------|
+| `outcomeMeta()` | Get HIP-4 outcome and question metadata |
+| `settledOutcome(outcome)` | Get settlement metadata for a settled outcome, or null if unsettled |
+
 **Account & Order Data**
 | Method | Description |
 |--------|-------------|
@@ -276,6 +283,15 @@ final exchange = ExchangeClient(wallet: wallet);
 | `subAccountTransfer(amount, subAccount, isDeposit)` | Transfer USDC to/from sub-accounts (perp DEX) |
 | `subAccountSpotTransfer(token, amount, subAccount, isDeposit)` | Transfer spot tokens to/from sub-accounts |
 
+**HIP-4 Outcome Actions**
+| Method | Description |
+|--------|-------------|
+| `userOutcome(operation)` | Submit a raw HIP-4 user outcome operation |
+| `splitOutcome(outcome, amount)` | Split quote tokens into Yes and No shares |
+| `mergeOutcome(outcome, amount?)` | Merge Yes and No shares back into quote tokens |
+| `mergeQuestion(question, amount?)` | Merge Yes shares across a question |
+| `negateOutcome(question, outcome, amount)` | Convert No shares into Yes shares of other outcomes |
+
 **Vault Operations** 🆕
 | Method | Description |
 |--------|-------------|
@@ -312,16 +328,81 @@ final exchange = ExchangeClient(wallet: wallet);
 **Other**
 | Method | Description |
 |--------|-------------|
+| `subscribeOutcomeMetaUpdates(callback)` | HIP-4 outcome metadata updates |
 | `subscribeRaw(key, message, callback)` | Generic raw subscription for any type |
 
-**Planned Future Subscriptions**
-- Spot market real-time data streams
-- Vault performance updates
+### HIP-4 Outcome Market Usage
+
+HIP-4 outcomes are spot-like markets with special asset IDs. The IDs come from
+`outcomeMeta()`:
+
+```dart
+final info = InfoClient();
+final meta = await info.outcomeMeta();
+final question = meta.questions.first;
+final outcome = meta.outcomes.firstWhere(
+  (o) => o.outcome == question.namedOutcomes.first,
+);
+
+final yesAsset = getOutcomeAssetId(outcome: outcome.outcome, side: 0);
+final noAsset = getOutcomeAssetId(outcome: outcome.outcome, side: 1);
+
+print('Yes coin: ${getOutcomeSpotCoin(outcome: outcome.outcome, side: 0)}');
+print('No coin: ${getOutcomeSpotCoin(outcome: outcome.outcome, side: 1)}');
+print('Yes asset id: $yesAsset');
+print('No asset id: $noAsset');
+```
+
+Outcome asset formulas:
+
+```text
+encoding = 10 * outcome + side
+spot coin = #<encoding>
+token name = +<encoding>
+asset id = 100000000 + encoding
+```
+
+Only sides `0` and `1` are valid. Outcome order books are merged: buying Yes at
+price `p` is equivalent to selling No at price `1 - p`. On settlement, Yes
+converts to `settleFraction` quote tokens and No converts to
+`1 - settleFraction`.
+
+To split and merge quote tokens:
+
+```dart
+final wallet = PrivateKeyWalletAdapter('0xYOUR_PRIVATE_KEY');
+final exchange = ExchangeClient(wallet: wallet);
+
+await exchange.splitOutcome(outcome: outcome.outcome, amount: '1.0');
+await exchange.mergeOutcome(outcome: outcome.outcome, amount: '1.0');
+```
+
+To place an outcome order, use `placeOrder()` with the outcome asset ID:
+
+```dart
+await exchange.placeOrder(
+  orders: [
+    OrderWire.limit(
+      asset: yesAsset,
+      isBuy: true,
+      limitPx: '0.01',
+      sz: '1.0',
+      tif: TimeInForce.alo,
+    ),
+  ],
+);
+```
+
+HIP-4 trading uses spot-side quote liquidity, usually spot USDC. Move USDC from
+perp to spot with `usdClassTransfer(amount: ..., toPerp: false)` if needed.
 
 ## Examples
 
 See the [`example/`](example/) directory for more examples:
 - [`hyperliquid_dart_example.dart`](example/hyperliquid_dart_example.dart) — Comprehensive demo
+- [`hip4_outcome_example.dart`](example/hip4_outcome_example.dart) — HIP-4 metadata, asset IDs, split/merge, and guarded order example
+- [`hip3_trading_example.dart`](example/hip3_trading_example.dart) — HIP-3 DEX metadata and asset IDs
+- [`spot_order_trading_example.dart`](example/spot_order_trading_example.dart) — Spot order placement and cancellation
 
 ## Testing
 
@@ -352,6 +433,7 @@ HYPERLIQUID_PRIVATE_KEY=0x... dart test --tags integration
 - [x] Spot market metadata and price queries
 - [x] **Spot token trading** (buy/sell, send, dust settings, sub-account transfers)
 - [x] HIP-3 DEX support (query DEXs, metadata, trade on builder-deployed perps)
+- [x] HIP-4 outcome-market metadata, asset helpers, split/merge/negate actions, and examples
 - [x] Sub-account queries and USDC transfers
 - [x] **Vault operations** (query vaults, deposit/withdraw, check positions)
 - [x] Order modification (single and batch)

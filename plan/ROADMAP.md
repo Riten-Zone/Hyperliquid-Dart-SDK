@@ -126,7 +126,8 @@ API pieces.
 
 - DONE: Audit outcome asset IDs against the current asset-id docs.
 - DONE: Add helpers so outcome tokens are not treated as ordinary spot symbols.
-- Add docs describing merged Yes/No order books and settlement fractions.
+- DONE: Add docs and example describing outcome asset IDs, merged Yes/No order
+  books, settlement fractions, split/merge, and guarded outcome order placement.
 
 ---
 
