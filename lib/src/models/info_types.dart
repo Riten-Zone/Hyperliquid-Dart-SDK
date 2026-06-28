@@ -451,14 +451,14 @@ class UserFunding {
 /// Spot balance entry.
 class SpotBalance {
   final String coin;
-  final int token;
+  final int? token;
   final String hold;
   final String total;
   final String entryNtl;
 
   const SpotBalance({
     required this.coin,
-    required this.token,
+    this.token,
     required this.hold,
     required this.total,
     required this.entryNtl,
@@ -467,7 +467,7 @@ class SpotBalance {
   factory SpotBalance.fromJson(Map<String, dynamic> json) {
     return SpotBalance(
       coin: json['coin'] as String,
-      token: json['token'] as int,
+      token: json['token'] as int?,
       hold: json['hold'] as String,
       total: json['total'] as String,
       entryNtl: json['entryNtl'] as String,
