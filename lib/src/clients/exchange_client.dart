@@ -164,7 +164,9 @@ class ExchangeClient {
   }) async {
     final action = <String, dynamic>{
       'type': 'cancelByCloid',
-      'cancels': cloids.map((cloid) => {'asset': asset, 'cloid': cloid}).toList(),
+      'cancels': cloids
+          .map((cloid) => {'asset': asset, 'cloid': cloid})
+          .toList(),
     };
 
     if (vaultAddress != null && vaultAddress.isNotEmpty) {
@@ -325,6 +327,7 @@ class ExchangeClient {
   Future<ExchangeResponse> updateIsolatedMargin({
     required int asset,
     required bool isBuy,
+
     /// Positive to add margin, negative to remove.
     required int ntli,
     String? vaultAddress,
@@ -424,13 +427,8 @@ class ExchangeClient {
   ///     .millisecondsSinceEpoch;
   /// await exchange.scheduleCancel(time: futureTime);
   /// ```
-  Future<ExchangeResponse> scheduleCancel({
-    required int time,
-  }) async {
-    final action = <String, dynamic>{
-      'type': 'scheduleCancel',
-      'time': time,
-    };
+  Future<ExchangeResponse> scheduleCancel({required int time}) async {
+    final action = <String, dynamic>{'type': 'scheduleCancel', 'time': time};
 
     return _signAndSend(action);
   }
@@ -662,14 +660,10 @@ class ExchangeClient {
   /// // Disable spot dusting
   /// await exchange.spotUser(optOut: true);
   /// ```
-  Future<ExchangeResponse> spotUser({
-    required bool optOut,
-  }) async {
+  Future<ExchangeResponse> spotUser({required bool optOut}) async {
     final action = <String, dynamic>{
       'type': 'spotUser',
-      'toggleSpotDusting': {
-        'optOut': optOut,
-      },
+      'toggleSpotDusting': {'optOut': optOut},
     };
 
     return _signAndSend(action);
@@ -790,7 +784,8 @@ class ExchangeClient {
         'destinationDex': destinationDex,
         'token': token,
         'amount': amount,
-        'fromSubAccount': fromSubAccount,  // Don't lowercase - it's type 'string' not 'address'
+        'fromSubAccount':
+            fromSubAccount, // Don't lowercase - it's type 'string' not 'address'
         'nonce': ts,
       },
     );
@@ -805,7 +800,8 @@ class ExchangeClient {
       'destinationDex': destinationDex,
       'token': token,
       'amount': amount,
-      'fromSubAccount': fromSubAccount,  // Don't lowercase - it's type 'string' not 'address'
+      'fromSubAccount':
+          fromSubAccount, // Don't lowercase - it's type 'string' not 'address'
       'nonce': ts,
     };
 
@@ -882,6 +878,70 @@ class ExchangeClient {
       'token': token,
       'amount': amount,
     };
+
+    return _signAndSend(action);
+  }
+
+  /// Split quote tokens into HIP-4 Yes and No outcome shares.
+  ///
+  /// This mutates balances. [amount] is a human-readable quote-token amount,
+  /// e.g. `"123.0"`.
+  Future<ExchangeResponse> splitOutcome({
+    required int outcome,
+    required String amount,
+  }) {
+    return userOutcome({
+      'splitOutcome': {'outcome': outcome, 'amount': amount},
+    });
+  }
+
+  /// Merge HIP-4 Yes and No outcome shares into quote tokens.
+  ///
+  /// Passing `null` for [amount] means merge the maximum available amount.
+  Future<ExchangeResponse> mergeOutcome({
+    required int outcome,
+    String? amount,
+  }) {
+    return userOutcome({
+      'mergeOutcome': {'outcome': outcome, 'amount': amount},
+    });
+  }
+
+  /// Merge Yes shares from every outcome in a HIP-4 question into quote tokens.
+  ///
+  /// Passing `null` for [amount] means merge the maximum available amount.
+  Future<ExchangeResponse> mergeQuestion({
+    required int question,
+    String? amount,
+  }) {
+    return userOutcome({
+      'mergeQuestion': {'question': question, 'amount': amount},
+    });
+  }
+
+  /// Convert No shares of one outcome into Yes shares of the other outcomes in
+  /// the same HIP-4 question.
+  Future<ExchangeResponse> negateOutcome({
+    required int question,
+    required int outcome,
+    required String amount,
+  }) {
+    return userOutcome({
+      'negateOutcome': {
+        'question': question,
+        'outcome': outcome,
+        'amount': amount,
+      },
+    });
+  }
+
+  /// Submit a raw HIP-4 userOutcome action.
+  ///
+  /// Prefer [splitOutcome], [mergeOutcome], [mergeQuestion], or [negateOutcome]
+  /// for typed calls. This method is exposed for forward compatibility if
+  /// Hyperliquid adds more HIP-4 user outcome operations.
+  Future<ExchangeResponse> userOutcome(Map<String, dynamic> operation) {
+    final action = <String, dynamic>{'type': 'userOutcome', ...operation};
 
     return _signAndSend(action);
   }

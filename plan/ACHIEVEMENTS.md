@@ -100,6 +100,11 @@ Implemented and still aligned:
 - approve builder fee
 - TWAP order
 - TWAP cancel
+- HIP-4 `userOutcome`
+- HIP-4 `splitOutcome`
+- HIP-4 `mergeOutcome`
+- HIP-4 `mergeQuestion`
+- HIP-4 `negateOutcome`
 
 ### WebSocket API
 
@@ -128,7 +133,8 @@ Implemented typed subscriptions:
 The current docs and the newer TypeScript SDK expose a wider surface than this
 SDK currently wraps. The remaining gap is no longer "basic trading"; it is
 account administration, staking, abstraction controls, deployment actions,
-HIP-4 outcome markets, borrow/lend endpoints, and WebSocket parity.
+borrow/lend endpoints, newer network/status endpoints, and documentation for
+the newly added HIP-4 outcome-market workflows.
 
 ### High-confidence missing Info endpoints
 
@@ -206,8 +212,6 @@ HIP-4 outcome markets, borrow/lend endpoints, and WebSocket parity.
 - `finalizeEvmContract`
 - `gossipPriorityBid`
 - `hip3LiquidatorTransfer`
-- HIP-4 `userOutcome` actions:
-  `splitOutcome`, `mergeOutcome`, `mergeQuestion`, and `negateOutcome`
 - HIP-1/HIP-2 `spotDeploy` actions
 - HIP-3 `perpDeploy` actions
 - `topUpIsolatedOnlyMargin` alternate isolated-margin action
@@ -227,7 +231,6 @@ HIP-4 outcome markets, borrow/lend endpoints, and WebSocket parity.
 - `spotAssetCtxs`
 - `userHistoricalOrders`
 - `webData2`
-- HIP-4 `outcomeMetaUpdates`
 
 The enum includes some of these names, but the high-level client does not yet
 expose typed methods and some enum mappings currently route to unrelated
@@ -261,8 +264,8 @@ subscription payloads.
 
 The new plan should clean up the remaining gap in this order:
 
-1. Finish HIP-4 outcome-market write support with `userOutcome`
-   split/merge/negate actions and outcome asset-id helpers.
+1. Add HIP-4 docs/examples for outcome asset ids, merged Yes/No books, and
+   settlement fractions.
 2. Add low-risk Info endpoint parity for rate limits, role, referrals, staking
    read APIs, abstraction state, TWAP slice fills, borrow/lend, and deployer
    status.
@@ -290,6 +293,6 @@ The main gap is current official-doc parity around:
 - API wallet approval and operational account actions
 - Bridge2 deposit-with-permit
 - HIP-1/HIP-2 and HIP-3 deployer workflows
-- HIP-4 outcome-market metadata, streams, and split/merge/negate actions
+- HIP-4 outcome-market docs and examples
 - borrow/lend and newer network/status endpoints
 - multi-sig and request-expiry support

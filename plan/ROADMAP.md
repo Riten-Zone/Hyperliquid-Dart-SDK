@@ -112,17 +112,20 @@ API pieces.
 
 ### Exchange actions
 
-Add `ExchangeClient.userOutcome(...)` or a dedicated `OutcomeClient` wrapping:
-
-- `splitOutcome(outcome, amount)`
-- `mergeOutcome(outcome, amount?)`
-- `mergeQuestion(question, amount?)`
-- `negateOutcome(question, outcome, amount)`
+- DONE: Add `ExchangeClient.userOutcome(...)` for raw HIP-4 operations
+- DONE: Add `ExchangeClient.splitOutcome(outcome, amount)`
+- DONE: Add `ExchangeClient.mergeOutcome(outcome, amount?)`
+- DONE: Add `ExchangeClient.mergeQuestion(question, amount?)`
+- DONE: Add `ExchangeClient.negateOutcome(question, outcome, amount)`
+- DONE: Add exact wire-payload unit tests for all HIP-4 userOutcome variants,
+  including `amount: null` max-merge cases
+- DONE: Add guarded live invalid-request integration test, skipped unless
+  `RUN_HIP4_USER_OUTCOME_LIVE_TEST=true`, to avoid accidental balance mutation
 
 ### Asset handling
 
-- Audit outcome asset IDs against the current asset-id docs.
-- Add helpers so outcome tokens are not treated as ordinary spot symbols.
+- DONE: Audit outcome asset IDs against the current asset-id docs.
+- DONE: Add helpers so outcome tokens are not treated as ordinary spot symbols.
 - Add docs describing merged Yes/No order books and settlement fractions.
 
 ---
@@ -333,9 +336,9 @@ These should wait until the current-doc cleanup is done:
 - Optional `dex` parameter audit
 - HIP-4 `outcomeMeta`, `settledOutcome`, and `outcomeMetaUpdates`
 
-### v0.3.0 - HIP-4 write actions and account actions
+### v0.3.0 - account actions and HIP-4 docs
 
-- HIP-4 `userOutcome` split/merge/negate actions
+- HIP-4 outcome asset-id, merged-book, and settlement docs/examples
 - API wallet approval
 - reserve request weight
 - nonce invalidation

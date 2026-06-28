@@ -35,6 +35,34 @@ int getHip3AssetId({required int perpDexIndex, required int metaIndex}) {
   return 100000 + (perpDexIndex * 10000) + metaIndex;
 }
 
+/// Get the HIP-4 outcome encoding for an outcome id and binary side.
+///
+/// `side` must be 0 or 1. The same encoding is used in the outcome spot coin,
+/// token name, and asset id representations.
+int getOutcomeEncoding({required int outcome, required int side}) {
+  if (side != 0 && side != 1) {
+    throw RangeError.range(side, 0, 1, 'side');
+  }
+  return 10 * outcome + side;
+}
+
+/// Get the HIP-4 outcome spot coin name, e.g. `#10`.
+String getOutcomeSpotCoin({required int outcome, required int side}) {
+  return '#${getOutcomeEncoding(outcome: outcome, side: side)}';
+}
+
+/// Get the HIP-4 outcome token name, e.g. `+10`.
+String getOutcomeTokenName({required int outcome, required int side}) {
+  return '+${getOutcomeEncoding(outcome: outcome, side: side)}';
+}
+
+/// Get the HIP-4 outcome asset id for orders and cancels.
+///
+/// Asset ID = 100000000 + (10 * outcome + side).
+int getOutcomeAssetId({required int outcome, required int side}) {
+  return 100000000 + getOutcomeEncoding(outcome: outcome, side: side);
+}
+
 /// Resolve an asset ID for any coin symbol (regular or HIP-3).
 ///
 /// For regular perpetuals, looks up the coin in [universeNames].
