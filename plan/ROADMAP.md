@@ -100,11 +100,15 @@ API pieces.
 
 ### Info and WebSocket
 
-- Add `InfoClient.outcomeMeta()`
-- Add `InfoClient.settledOutcome(...)`
-- Add `WebSocketClient.subscribeOutcomeMetaUpdates()`
-- Add outcome metadata models including side specs, settlement data, questions,
-  and linked outcomes
+- DONE: Add `InfoClient.outcomeMeta()`
+- DONE: Add `InfoClient.settledOutcome(outcome)`
+- DONE: Add `WebSocketClient.subscribeOutcomeMetaUpdates()`
+- DONE: Add outcome metadata models including side specs, settlement data,
+  questions, and linked outcomes
+- DONE: Add unit tests for HIP-4 Info request payloads and parser behavior
+- DONE: Add live read-only HIP-4 integration test. On 2026-06-26, production
+  `outcomeMeta` returned 113 outcomes and 16 questions; `settledOutcome(171)`
+  returned `null` for an unsettled outcome.
 
 ### Exchange actions
 
@@ -139,8 +143,6 @@ These are request/response wrappers with no new signing surface.
 - `userTwapSliceFills(user)`
 - `userTwapSliceFillsByTime(user, startTime, endTime?)`
 - `twapHistory(user)`
-- `outcomeMeta()`
-- `settledOutcome(...)`
 - `activeAssetData(user, coin)`
 - `approvedBuilders(user)`
 - `allPerpMetas()`

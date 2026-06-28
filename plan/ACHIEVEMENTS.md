@@ -76,6 +76,8 @@ Implemented and still aligned:
 - `perpDexs`
 - `vaultSummaries`
 - `leadingVaults`
+- HIP-4 `outcomeMeta`
+- HIP-4 `settledOutcome`
 
 ### Exchange API
 
@@ -142,8 +144,6 @@ HIP-4 outcome markets, borrow/lend endpoints, and WebSocket parity.
 - `userTwapSliceFills`
 - `userTwapSliceFillsByTime`
 - `twapHistory`
-- `outcomeMeta`
-- `settledOutcome`
 - `activeAssetData`
 - `approvedBuilders`
 - `allPerpMetas`
@@ -259,22 +259,19 @@ subscription payloads.
 
 ## Cleanup direction
 
-The new plan should clean up the gap in this order:
+The new plan should clean up the remaining gap in this order:
 
-1. Fix WebSocket mapping/parity issues and expose the seven missing typed
-   subscriptions.
-2. Add HIP-4 outcome-market read/write support: `outcomeMeta`,
-   `settledOutcome`, `outcomeMetaUpdates`, and `userOutcome` split/merge/negate
-   actions.
-3. Add low-risk Info endpoint parity for rate limits, role, referrals, staking
+1. Finish HIP-4 outcome-market write support with `userOutcome`
+   split/merge/negate actions and outcome asset-id helpers.
+2. Add low-risk Info endpoint parity for rate limits, role, referrals, staking
    read APIs, abstraction state, TWAP slice fills, borrow/lend, and deployer
    status.
-4. Add account and admin Exchange actions: API wallet approval, reserve weight,
+3. Add account and admin Exchange actions: API wallet approval, reserve weight,
    nonce invalidation, abstraction controls, reward claim, staking actions, and
    EVM transfer with data.
-5. Split advanced deployer functionality into dedicated clients for HIP-1/HIP-2
+4. Split advanced deployer functionality into dedicated clients for HIP-1/HIP-2
    spot deployment and HIP-3 perp deployment.
-6. Refresh README/API docs and examples so the stated coverage matches the
+5. Refresh README/API docs and examples so the stated coverage matches the
    current official docs.
 
 ---

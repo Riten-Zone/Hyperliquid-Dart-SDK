@@ -143,7 +143,8 @@ class AssetContext {
     return AssetContext(
       dayNtlVlm: json['dayNtlVlm'] as String? ?? '0',
       funding: json['funding'] as String? ?? '0',
-      impactPxs: (json['impactPxs'] as List<dynamic>?)
+      impactPxs:
+          (json['impactPxs'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
@@ -171,10 +172,7 @@ class Meta {
   /// Only token IDs > 0 refer to spot tokens (e.g., 360=USDH, 2=USDT).
   final int? collateralToken;
 
-  const Meta({
-    required this.universe,
-    this.collateralToken,
-  });
+  const Meta({required this.universe, this.collateralToken});
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     final universeList = (json['universe'] as List<dynamic>?) ?? [];
@@ -206,10 +204,7 @@ class L2Level {
   const L2Level({required this.price, required this.size});
 
   factory L2Level.fromJson(Map<String, dynamic> json) {
-    return L2Level(
-      price: json['px'] as String,
-      size: json['sz'] as String,
-    );
+    return L2Level(price: json['px'] as String, size: json['sz'] as String);
   }
 }
 
@@ -488,7 +483,8 @@ class SpotClearinghouseState {
 
   factory SpotClearinghouseState.fromJson(Map<String, dynamic> json) {
     return SpotClearinghouseState(
-      balances: (json['balances'] as List<dynamic>?)
+      balances:
+          (json['balances'] as List<dynamic>?)
               ?.map((e) => SpotBalance.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -564,18 +560,17 @@ class SpotMeta {
   final List<SpotUniverse> universe;
   final List<SpotToken> tokens;
 
-  const SpotMeta({
-    required this.universe,
-    required this.tokens,
-  });
+  const SpotMeta({required this.universe, required this.tokens});
 
   factory SpotMeta.fromJson(Map<String, dynamic> json) {
     return SpotMeta(
-      universe: (json['universe'] as List<dynamic>?)
+      universe:
+          (json['universe'] as List<dynamic>?)
               ?.map((e) => SpotUniverse.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      tokens: (json['tokens'] as List<dynamic>?)
+      tokens:
+          (json['tokens'] as List<dynamic>?)
               ?.map((e) => SpotToken.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -624,10 +619,7 @@ class SpotMetaAndAssetCtxs {
   final SpotMeta meta;
   final List<SpotAssetContext> assetCtxs;
 
-  const SpotMetaAndAssetCtxs({
-    required this.meta,
-    required this.assetCtxs,
-  });
+  const SpotMetaAndAssetCtxs({required this.meta, required this.assetCtxs});
 
   factory SpotMetaAndAssetCtxs.fromJson(List<dynamic> json) {
     if (json.length < 2) {
@@ -639,7 +631,8 @@ class SpotMetaAndAssetCtxs {
 
     return SpotMetaAndAssetCtxs(
       meta: SpotMeta.fromJson(json[0] as Map<String, dynamic>),
-      assetCtxs: (json[1] as List<dynamic>?)
+      assetCtxs:
+          (json[1] as List<dynamic>?)
               ?.map((e) => SpotAssetContext.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -701,7 +694,8 @@ class TokenDetails {
       deployGas: json['deployGas'] as String?,
       deployTime: json['deployTime'] as String?,
       seededUsdc: json['seededUsdc'] as String,
-      nonCirculatingUserBalances: json['nonCirculatingUserBalances'] as List<dynamic>? ?? [],
+      nonCirculatingUserBalances:
+          json['nonCirculatingUserBalances'] as List<dynamic>? ?? [],
       futureEmissions: json['futureEmissions'] as String,
     );
   }
@@ -742,8 +736,11 @@ class SubAccountSpotState {
 
   factory SubAccountSpotState.fromJson(Map<String, dynamic> json) {
     return SubAccountSpotState(
-      balances: (json['balances'] as List<dynamic>?)
-              ?.map((e) => SubAccountBalance.fromJson(e as Map<String, dynamic>))
+      balances:
+          (json['balances'] as List<dynamic>?)
+              ?.map(
+                (e) => SubAccountBalance.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );
@@ -1098,8 +1095,8 @@ class PortfolioPeriod {
 
   factory PortfolioPeriod.fromJson(Map<String, dynamic> json) {
     return PortfolioPeriod(
-      accountValueHistory:
-          (json['accountValueHistory'] as List<dynamic>).cast<List<dynamic>>(),
+      accountValueHistory: (json['accountValueHistory'] as List<dynamic>)
+          .cast<List<dynamic>>(),
       pnlHistory: (json['pnlHistory'] as List<dynamic>).cast<List<dynamic>>(),
       vlm: json['vlm'] as String,
     );
@@ -1148,11 +1145,7 @@ class BboUpdate {
   /// Best bid-offer pair: [bid, ask]
   final List<BboLevel> bbo;
 
-  const BboUpdate({
-    required this.coin,
-    required this.time,
-    required this.bbo,
-  });
+  const BboUpdate({required this.coin, required this.time, required this.bbo});
 
   factory BboUpdate.fromJson(Map<String, dynamic> json) {
     final bboList = json['bbo'] as List<dynamic>;
@@ -1177,10 +1170,7 @@ class BboLevel {
   const BboLevel({required this.px, required this.sz});
 
   factory BboLevel.fromJson(Map<String, dynamic> json) {
-    return BboLevel(
-      px: json['px'] as String,
-      sz: json['sz'] as String,
-    );
+    return BboLevel(px: json['px'] as String, sz: json['sz'] as String);
   }
 }
 
@@ -1223,10 +1213,7 @@ class NotificationMessage {
   /// Notification message content
   final String message;
 
-  const NotificationMessage({
-    required this.user,
-    required this.message,
-  });
+  const NotificationMessage({required this.user, required this.message});
 
   factory NotificationMessage.fromJson(Map<String, dynamic> json) {
     return NotificationMessage(
@@ -1476,8 +1463,9 @@ class UserFees {
       activeStakingDiscount: stakingData != null
           ? ActiveStakingDiscount.fromJson(stakingData as Map<String, dynamic>)
           : null,
-      trial:
-          trialData != null ? FeeTrial.fromJson(trialData as Map<String, dynamic>) : null,
+      trial: trialData != null
+          ? FeeTrial.fromJson(trialData as Map<String, dynamic>)
+          : null,
       feeTrialReward: json['feeTrialReward'] as String?,
       nextTrialAvailableTimestamp: json['nextTrialAvailableTimestamp'] as int?,
     );
@@ -1544,9 +1532,7 @@ class FeeTrial {
   const FeeTrial({required this.endTimestamp});
 
   factory FeeTrial.fromJson(Map<String, dynamic> json) {
-    return FeeTrial(
-      endTimestamp: json['endTimestamp'] as int,
-    );
+    return FeeTrial(endTimestamp: json['endTimestamp'] as int);
   }
 }
 
@@ -1584,17 +1570,11 @@ class LedgerDelta {
   /// Raw delta data (contains type-specific fields)
   final Map<String, dynamic> data;
 
-  const LedgerDelta({
-    required this.type,
-    required this.data,
-  });
+  const LedgerDelta({required this.type, required this.data});
 
   factory LedgerDelta.fromJson(Map<String, dynamic> json) {
     final type = json['type'] as String;
-    return LedgerDelta(
-      type: type,
-      data: Map<String, dynamic>.from(json),
-    );
+    return LedgerDelta(type: type, data: Map<String, dynamic>.from(json));
   }
 
   /// Get USDC amount (for deposit, withdraw, transfer operations)
@@ -1650,10 +1630,7 @@ class VaultRelationship {
   /// Relationship data (optional)
   final VaultRelationshipData? data;
 
-  const VaultRelationship({
-    required this.type,
-    this.data,
-  });
+  const VaultRelationship({required this.type, this.data});
 
   factory VaultRelationship.fromJson(Map<String, dynamic> json) {
     return VaultRelationship(
@@ -1869,12 +1846,15 @@ class VaultDetails {
       description: json['description'] as String?,
       portfolio: VaultPortfolio.fromJson(json['portfolio'] as List<dynamic>),
       apr: (json['apr'] as num?)?.toDouble() ?? 0.0,
-      followers: (json['followers'] as List<dynamic>?)
+      followers:
+          (json['followers'] as List<dynamic>?)
               ?.map((e) => VaultFollower.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       followerState: json['followerState'] != null
-          ? FollowerState.fromJson(json['followerState'] as Map<String, dynamic>)
+          ? FollowerState.fromJson(
+              json['followerState'] as Map<String, dynamic>,
+            )
           : null,
       leaderCommission: (json['leaderCommission'] as num?)?.toDouble() ?? 0.0,
       leaderFraction: (json['leaderFraction'] as num?)?.toDouble() ?? 0.0,
@@ -1882,7 +1862,9 @@ class VaultDetails {
       maxWithdrawable: (json['maxWithdrawable'] as num?)?.toDouble() ?? 0.0,
       isClosed: json['isClosed'] as bool? ?? false,
       relationship: json['relationship'] != null
-          ? VaultRelationship.fromJson(json['relationship'] as Map<String, dynamic>)
+          ? VaultRelationship.fromJson(
+              json['relationship'] as Map<String, dynamic>,
+            )
           : null,
       allowDeposits: json['allowDeposits'] as bool? ?? true,
       alwaysCloseOnWithdraw: json['alwaysCloseOnWithdraw'] as bool? ?? false,
@@ -1931,7 +1913,8 @@ class VaultSummary {
       tvl: json['tvl'] as String? ?? '0',
       isClosed: json['isClosed'] as bool? ?? false,
       relationship: VaultRelationship.fromJson(
-          json['relationship'] as Map<String, dynamic>? ?? {'type': 'normal'}),
+        json['relationship'] as Map<String, dynamic>? ?? {'type': 'normal'},
+      ),
       createTimeMillis: json['createTimeMillis'] as int? ?? 0,
     );
   }
@@ -1946,15 +1929,13 @@ class LeadingVault {
   /// Vault name
   final String name;
 
-  const LeadingVault({
-    required this.vaultAddress,
-    required this.name,
-  });
+  const LeadingVault({required this.vaultAddress, required this.name});
 
   factory LeadingVault.fromJson(Map<String, dynamic> json) {
     return LeadingVault(
       // API returns 'address' not 'vaultAddress'
-      vaultAddress: json['address'] as String? ?? json['vaultAddress'] as String,
+      vaultAddress:
+          json['address'] as String? ?? json['vaultAddress'] as String,
       name: json['name'] as String,
     );
   }
@@ -1968,10 +1949,7 @@ class UserVaultEquity {
   /// User's equity in this vault
   final String equity;
 
-  const UserVaultEquity({
-    required this.vaultAddress,
-    required this.equity,
-  });
+  const UserVaultEquity({required this.vaultAddress, required this.equity});
 
   factory UserVaultEquity.fromJson(Map<String, dynamic> json) {
     return UserVaultEquity(
@@ -1979,4 +1957,176 @@ class UserVaultEquity {
       equity: json['equity'] as String,
     );
   }
+}
+
+/// HIP-4 outcome metadata response.
+class OutcomeMeta {
+  /// Outcome market definitions.
+  final List<OutcomeInfo> outcomes;
+
+  /// Multi-outcome question definitions.
+  final List<OutcomeQuestion> questions;
+
+  /// Raw response payload for forward-compatible access to new fields.
+  final Map<String, dynamic> raw;
+
+  const OutcomeMeta({
+    required this.outcomes,
+    required this.questions,
+    required this.raw,
+  });
+
+  factory OutcomeMeta.fromJson(Map<String, dynamic> json) {
+    return OutcomeMeta(
+      outcomes:
+          (json['outcomes'] as List<dynamic>?)
+              ?.map((e) => OutcomeInfo.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      questions:
+          (json['questions'] as List<dynamic>?)
+              ?.map((e) => OutcomeQuestion.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      raw: json,
+    );
+  }
+}
+
+/// HIP-4 outcome market definition.
+class OutcomeInfo {
+  /// Numeric outcome id used by HIP-4 actions and asset-id helpers.
+  final int outcome;
+
+  /// Human-readable outcome name.
+  final String name;
+
+  /// Full resolution description.
+  final String description;
+
+  /// Outcome side labels, commonly Yes and No.
+  final List<OutcomeSideSpec> sideSpecs;
+
+  /// Quote token symbol, commonly USDC.
+  final String quoteToken;
+
+  /// Settlement fraction when present for settled outcomes.
+  final String? settleFraction;
+
+  /// Raw outcome payload for forward-compatible access to new fields.
+  final Map<String, dynamic> raw;
+
+  const OutcomeInfo({
+    required this.outcome,
+    required this.name,
+    required this.description,
+    required this.sideSpecs,
+    required this.quoteToken,
+    this.settleFraction,
+    required this.raw,
+  });
+
+  factory OutcomeInfo.fromJson(Map<String, dynamic> json) {
+    return OutcomeInfo(
+      outcome: json['outcome'] as int,
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      sideSpecs:
+          (json['sideSpecs'] as List<dynamic>?)
+              ?.map((e) => OutcomeSideSpec.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      quoteToken: json['quoteToken'] as String? ?? '',
+      settleFraction: json['settleFraction']?.toString(),
+      raw: json,
+    );
+  }
+}
+
+/// HIP-4 outcome side label.
+class OutcomeSideSpec {
+  /// Human-readable side name.
+  final String name;
+
+  /// Raw side payload for forward-compatible access to new fields.
+  final Map<String, dynamic> raw;
+
+  const OutcomeSideSpec({required this.name, required this.raw});
+
+  factory OutcomeSideSpec.fromJson(Map<String, dynamic> json) {
+    return OutcomeSideSpec(name: json['name'] as String? ?? '', raw: json);
+  }
+}
+
+/// HIP-4 question grouping multiple outcomes.
+class OutcomeQuestion {
+  /// Numeric question id used by HIP-4 merge/negate actions.
+  final int question;
+
+  /// Human-readable question name.
+  final String name;
+
+  /// Full resolution description.
+  final String description;
+
+  /// Fallback outcome id.
+  final int? fallbackOutcome;
+
+  /// Outcome ids linked to this question.
+  final List<int> namedOutcomes;
+
+  /// Outcome ids already settled within this question.
+  final List<int> settledNamedOutcomes;
+
+  /// Raw question payload for forward-compatible access to new fields.
+  final Map<String, dynamic> raw;
+
+  const OutcomeQuestion({
+    required this.question,
+    required this.name,
+    required this.description,
+    this.fallbackOutcome,
+    required this.namedOutcomes,
+    required this.settledNamedOutcomes,
+    required this.raw,
+  });
+
+  factory OutcomeQuestion.fromJson(Map<String, dynamic> json) {
+    return OutcomeQuestion(
+      question: json['question'] as int,
+      name: json['name'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      fallbackOutcome: json['fallbackOutcome'] as int?,
+      namedOutcomes: _intList(json['namedOutcomes']),
+      settledNamedOutcomes: _intList(json['settledNamedOutcomes']),
+      raw: json,
+    );
+  }
+}
+
+/// HIP-4 settled outcome metadata.
+class SettledOutcome {
+  /// Numeric outcome id.
+  final int? outcome;
+
+  /// Settlement fraction returned by Hyperliquid.
+  final String? settleFraction;
+
+  /// Raw settled outcome payload for forward-compatible access to new fields.
+  final Map<String, dynamic> raw;
+
+  const SettledOutcome({this.outcome, this.settleFraction, required this.raw});
+
+  factory SettledOutcome.fromJson(Map<String, dynamic> json) {
+    return SettledOutcome(
+      outcome: json['outcome'] as int?,
+      settleFraction: json['settleFraction']?.toString(),
+      raw: json,
+    );
+  }
+}
+
+List<int> _intList(dynamic value) {
+  if (value is! List) return [];
+  return value.map((e) => e as int).toList();
 }

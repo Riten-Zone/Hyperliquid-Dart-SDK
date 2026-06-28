@@ -22,7 +22,7 @@ class InfoClient {
   /// Pass [isTestnet] to use the testnet API.
   /// Pass a custom [transport] for testing.
   InfoClient({bool isTestnet = false, HttpTransport? transport})
-      : _transport = transport ?? HttpTransport(isTestnet: isTestnet);
+    : _transport = transport ?? HttpTransport(isTestnet: isTestnet);
 
   /// Fetch OHLCV candle snapshot for a specific time range.
   ///
@@ -70,9 +70,7 @@ class InfoClient {
     });
 
     if (data is! List) return [];
-    return data
-        .map((e) => Candle.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return data.map((e) => Candle.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   /// Fetch candle data with automatic pagination for large time ranges.
@@ -640,6 +638,44 @@ class InfoClient {
     return TokenDetails.fromJson(data as Map<String, dynamic>);
   }
 
+  /// Fetch HIP-4 outcome market metadata.
+  ///
+  /// Returns outcome definitions and question groupings for prediction-market
+  /// and bounded outcome instruments. Outcome ids returned here are used by
+  /// HIP-4 split, merge, and negate actions.
+  ///
+  /// Example:
+  /// ```dart
+  /// final meta = await info.outcomeMeta();
+  /// final first = meta.outcomes.first;
+  /// print('${first.outcome}: ${first.name} (${first.quoteToken})');
+  /// ```
+  Future<OutcomeMeta> outcomeMeta() async {
+    final data = await _transport.postInfo({'type': 'outcomeMeta'});
+    if (data is Map<String, dynamic>) {
+      return OutcomeMeta.fromJson(data);
+    }
+
+    return const OutcomeMeta(outcomes: [], questions: [], raw: {});
+  }
+
+  /// Fetch settlement metadata for a HIP-4 outcome.
+  ///
+  /// Returns `null` when the outcome has not settled yet.
+  Future<SettledOutcome?> settledOutcome(int outcome) async {
+    final data = await _transport.postInfo({
+      'type': 'settledOutcome',
+      'outcome': outcome,
+    });
+
+    if (data == null) return null;
+    if (data is Map<String, dynamic>) {
+      return SettledOutcome.fromJson(data);
+    }
+
+    return null;
+  }
+
   /// Fetch a user's sub-accounts.
   ///
   /// Returns all sub-accounts for the given master account address,
@@ -798,9 +834,7 @@ class InfoClient {
       'coin': coin,
     });
     if (data is! List) return [];
-    return data
-        .map((e) => Trade.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return data.map((e) => Trade.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   /// Get the max approved builder fee for a user and HIP-3 builder.
